@@ -3,23 +3,7 @@
 @section('content')
 <div class="container py-4">
 
-    {{-- ✅ User Notifications --}}
-    @if (auth()->user()->unreadNotifications->count())
-        <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
-            <h5 class="mb-2">🔔 Notifications</h5>
-            <ul class="list-unstyled mb-0">
-                @foreach (auth()->user()->unreadNotifications as $notification)
-                    <li>
-                        {{ $notification->data['message'] ?? 'You have a new update.' }}
-                    </li>
-                @endforeach
-            </ul>
-            <form method="POST" action="{{ route('notifications.read') }}" class="mt-2">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-primary">Mark all as read</button>
-            </form>
-        </div>
-    @endif
+    {{-- Notifications disabled (table doesn't exist) --}}
 
     {{-- Page Title --}}
     <div class="row mb-4">

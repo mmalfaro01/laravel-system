@@ -1,0 +1,365 @@
+/**
+ * Tropical Burger Theme CSS
+ * A vibrant tropical burger ordering system theme
+ */
+
+/* ============================================
+   CSS Variables - Tropical Color Palette
+   ============================================ */
+:root {
+    --tropical-orange: #FF6B35;
+    --tropical-yellow: #FFD23F;
+    --tropical-red: #E74C3C;
+    --tropical-green: #27AE60;
+    --tropical-brown: #8B4513;
+    --tropical-light: #FFF8DC;
+    --tropical-cream: #FFE4B5;
+    --tropical-dark: #654321;
+}
+
+/* ============================================
+   Global Styles
+   ============================================ */
+body {
+    background: linear-gradient(135deg, var(--tropical-light) 0%, var(--tropical-cream) 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--tropical-brown);
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--tropical-brown);
+    font-weight: 700;
+}
+
+.text-tropical {
+    color: var(--tropical-orange);
+}
+
+.text-tropical-brown {
+    color: var(--tropical-brown);
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.btn-primary {
+    background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+    background: linear-gradient(135deg, var(--tropical-red), var(--tropical-orange));
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--tropical-yellow), #FFA500);
+    border: none;
+    color: var(--tropical-brown);
+    font-weight: 600;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--tropical-green), #229954);
+    border: none;
+}
+
+/* ============================================
+   Cards
+   ============================================ */
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+    color: white;
+    font-weight: 700;
+    border: none;
+}
+
+/* ============================================
+   Navigation
+   ============================================ */
+.navbar {
+    background: linear-gradient(135deg, var(--tropical-orange) 0%, var(--tropical-red) 100%) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--tropical-yellow) !important;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   Badges
+   ============================================ */
+.badge {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+}
+
+.badge-tropical {
+    background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+    color: white;
+}
+
+/* ============================================
+   Alerts
+   ============================================ */
+.alert {
+    border-radius: 1rem;
+    border: none;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: var(--tropical-brown);
+    border-left: 5px solid var(--tropical-green);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: var(--tropical-brown);
+    border-left: 5px solid var(--tropical-red);
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, var(--tropical-light), var(--tropical-cream));
+    color: var(--tropical-brown);
+    border-left: 5px solid var(--tropical-orange);
+}
+
+/* ============================================
+   Forms
+   ============================================ */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--tropical-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+.form-label {
+    color: var(--tropical-brown);
+    font-weight: 600;
+}
+
+/* ============================================
+   Tables
+   ============================================ */
+.table thead {
+    background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+    color: white;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--tropical-light);
+}
+
+/* ============================================
+   Backgrounds
+   ============================================ */
+.bg-tropical {
+    background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+}
+
+.bg-tropical-light {
+    background: linear-gradient(135deg, var(--tropical-light), var(--tropical-cream));
+}
+
+.bg-tropical-brown {
+    background: linear-gradient(135deg, var(--tropical-brown), var(--tropical-dark));
+}
+
+/* ============================================
+   Shadows
+   ============================================ */
+.shadow-tropical {
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes bounce {
+    0%, 100% { 
+        transform: translateY(0); 
+    }
+    50% { 
+        transform: translateY(-10px); 
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1); 
+    }
+    50% { 
+        transform: scale(1.05); 
+    }
+}
+
+.bounce-animation {
+    animation: bounce 2s infinite;
+}
+
+.pulse-animation {
+    animation: pulse 1.5s infinite;
+}
+
+/* ============================================
+   Product Cards
+   ============================================ */
+.product-card {
+    position: relative;
+    overflow: hidden;
+    border: 3px solid var(--tropical-orange);
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(231,76,60,0.1));
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   Icons
+   ============================================ */
+.icon-tropical {
+    color: var(--tropical-orange);
+    font-size: 2rem;
+}
+
+.icon-large {
+    font-size: 3rem;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+footer {
+    background: linear-gradient(135deg, var(--tropical-brown) 0%, var(--tropical-dark) 100%) !important;
+}
+
+/* ============================================
+   Responsive Utilities
+   ============================================ */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* ============================================
+   Custom Scrollbar
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--tropical-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--tropical-red);
+}
+
+/* ============================================
+   Loading States
+   ============================================ */
+.loading-spinner {
+    border: 4px solid var(--tropical-light);
+    border-top: 4px solid var(--tropical-orange);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Special Elements
+   ============================================ */
+.burger-icon-large {
+    font-size: 5rem;
+    color: var(--tropical-orange);
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+}
+
+.tropical-divider {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--tropical-orange), transparent);
+    margin: 2rem 0;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .navbar,
+    footer,
+    .btn {
+        display: none;
+    }
+}
+

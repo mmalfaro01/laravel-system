@@ -10,22 +10,13 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-    'name',
-    'description',
-    'price',
-    'stock', // ← THIS IS NEEDED
-    'image',
-    'category_id'
-];
+        'name',
+        'description',
+        'price',
+        'image',
+    ];
 
 
-    /**
-     * A product belongs to a category.
-     */
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 
     /**
      * Accessor: Get formatted price with ₱ currency.

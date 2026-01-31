@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\OrderStatusUpdated;
 
 class OrderController extends Controller
 {
@@ -21,12 +20,13 @@ class OrderController extends Controller
             abort(403);
         }
 
+        $order->load('orderItems.product');
+
         return view('orders.show', compact('order'));
     }
 
     /**
      * Update the status of an order (admin use or testing)
-     * and notify the user.
      */
     public function updateStatus(Request $request, Order $order)
     {
@@ -37,9 +37,6 @@ class OrderController extends Controller
         $order->status = $request->status;
         $order->save();
 
-        // Send notification to user
-        $order->user->notify(new OrderStatusUpdated($order));
-
-        return redirect()->back()->with('status', 'Order status updated and user notified.');
+        return redirect()->back()->with('status', 'Order status updated successfully.');
     }
 }

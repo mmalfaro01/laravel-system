@@ -1,64 +1,122 @@
 @extends('layouts.app')
 
-@section('title', 'Privacy Policy')
+@section('title', 'Privacy Policy - Tropical Burger Siquijor')
 
 @section('content')
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="mb-4 text-center">
-                <h1 class="fw-bold text-success"><i class="bi bi-shield-lock-fill me-2"></i>Privacy Policy</h1>
+            <div class="mb-5 text-center">
+                <i class='bx bxs-shield-alt-2 display-1 mb-3' style="color: var(--tropical-orange);"></i>
+                <h1 class="fw-bold" style="color: var(--tropical-brown);">Privacy Policy</h1>
                 <p class="text-muted">Last updated: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
             </div>
 
-            <div class="bg-light p-4 rounded shadow-sm">
-                <p class="mb-4">
-                    At <strong>Veggie Shop</strong>, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal information.
-                </p>
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <p class="mb-4" style="font-size: 1.1rem;">
+                        At <strong>Tropical Burger Siquijor</strong>, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal information when you order from us online or visit our restaurant.
+                    </p>
 
-                <h5 class="fw-semibold mt-4"><i class="bi bi-person-lines-fill me-2"></i>Information We Collect</h5>
-                <ul class="list-unstyled ps-3">
-                    <li><i class="bi bi-dot"></i> Name and contact details (email, phone number)</li>
-                    <li><i class="bi bi-dot"></i> Delivery address and billing information</li>
-                    <li><i class="bi bi-dot"></i> Order history and preferences</li>
-                    <li><i class="bi bi-dot"></i> IP address and device information (for security)</li>
-                </ul>
+                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-orange);">
+                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
+                            <i class='bx bxs-user-detail me-2' style="color: var(--tropical-orange);"></i>Information We Collect
+                        </h5>
+                        <ul class="list-unstyled ps-3 mb-0">
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Name and contact details (email, phone number)</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Delivery address (for online orders)</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Order history and preferences</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Payment information (processed securely)</li>
+                            <li class="mb-0"><i class='bx bx-check text-success me-2'></i> IP address and device information (for security purposes)</li>
+                        </ul>
+                    </div>
 
-                <h5 class="fw-semibold mt-4"><i class="bi bi-lock-fill me-2"></i>How We Use Your Information</h5>
-                <ul class="list-unstyled ps-3">
-                    <li><i class="bi bi-dot"></i> To process your orders and manage deliveries</li>
-                    <li><i class="bi bi-dot"></i> To improve your shopping experience</li>
-                    <li><i class="bi bi-dot"></i> To send order updates, notifications, or promotions</li>
-                    <li><i class="bi bi-dot"></i> To ensure security and prevent fraud</li>
-                </ul>
+                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-green);">
+                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
+                            <i class='bx bxs-cog me-2' style="color: var(--tropical-green);"></i>How We Use Your Information
+                        </h5>
+                        <ul class="list-unstyled ps-3 mb-0">
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> To process your orders and manage deliveries</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> To provide updates on your order status</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> To improve your experience and our services</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> To send promotional offers (only with your consent)</li>
+                            <li class="mb-0"><i class='bx bx-check text-success me-2'></i> To ensure security and prevent fraudulent activities</li>
+                        </ul>
+                    </div>
 
-                <h5 class="fw-semibold mt-4"><i class="bi bi-shield-check me-2"></i>Data Protection</h5>
-                <p>
-                    We implement appropriate security measures to safeguard your data. Your personal details are stored securely and are only accessible by authorized personnel.
-                </p>
+                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-red);">
+                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
+                            <i class='bx bxs-lock-alt me-2' style="color: var(--tropical-red);"></i>Data Protection & Security
+                        </h5>
+                        <p class="mb-0">
+                            We implement appropriate technical and organizational security measures to protect your personal data against unauthorized access, 
+                            alteration, disclosure, or destruction. Your payment information is processed through secure, encrypted channels and we never store 
+                            your full credit card details on our servers.
+                        </p>
+                    </div>
 
-                <h5 class="fw-semibold mt-4"><i class="bi bi-people-fill me-2"></i>Third-Party Sharing</h5>
-                <p>
-                    We do not sell or rent your personal information. We may share data with trusted third parties only when necessary (e.g., courier services) and only to fulfill your orders.
-                </p>
+                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-yellow);">
+                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
+                            <i class='bx bxs-group me-2' style="color: var(--tropical-orange);"></i>Third-Party Sharing
+                        </h5>
+                        <p class="mb-0">
+                            We do not sell, trade, or rent your personal information to third parties. We may share your data only with trusted service providers 
+                            (such as delivery partners) who assist us in operating our business and serving you better. These parties are bound by confidentiality 
+                            agreements and are not permitted to use your information for any other purpose.
+                        </p>
+                    </div>
 
-                <h5 class="fw-semibold mt-4"><i class="bi bi-gear-fill me-2"></i>Your Rights</h5>
-                <ul class="list-unstyled ps-3">
-                    <li><i class="bi bi-dot"></i> Access and review your personal information</li>
-                    <li><i class="bi bi-dot"></i> Request correction or deletion of your data</li>
-                    <li><i class="bi bi-dot"></i> Opt-out of promotional emails</li>
-                </ul>
+                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-green);">
+                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
+                            <i class='bx bxs-user-check me-2' style="color: var(--tropical-green);"></i>Your Rights
+                        </h5>
+                        <ul class="list-unstyled ps-3 mb-0">
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> <strong>Access:</strong> Request a copy of your personal data</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> <strong>Correction:</strong> Request corrections to inaccurate information</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> <strong>Deletion:</strong> Request deletion of your personal data</li>
+                            <li class="mb-0"><i class='bx bx-check text-success me-2'></i> <strong>Opt-out:</strong> Unsubscribe from promotional emails at any time</li>
+                        </ul>
+                    </div>
 
-                <h5 class="fw-semibold mt-4"><i class="bi bi-envelope-at-fill me-2"></i>Contact Us</h5>
-                <p>
-                    For any privacy concerns or questions, you may reach us at:<br>
-                    <strong>Email:</strong> support@veggieshop.com<br>
-                    <strong>Phone:</strong> +63 912 345 6789
-                </p>
+                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-orange);">
+                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
+                            <i class='bx bxs-cookie me-2' style="color: var(--tropical-orange);"></i>Cookies
+                        </h5>
+                        <p class="mb-0">
+                            Our website uses cookies to enhance your browsing experience, remember your preferences, and analyze site traffic. 
+                            You can control cookie settings through your browser, but please note that disabling cookies may affect the functionality 
+                            of certain features.
+                        </p>
+                    </div>
 
-                <p class="text-muted mt-4 small">
-                    This policy may be updated from time to time. Please check this page regularly to stay informed of any changes.
-                </p>
+                    <div class="alert border-0" style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));">
+                        <h5 class="fw-bold text-white mb-3">
+                            <i class='bx bxs-envelope me-2'></i>Contact Us About Privacy
+                        </h5>
+                        <p class="text-white mb-2">
+                            If you have any questions or concerns about our Privacy Policy or how we handle your data, please don't hesitate to contact us:
+                        </p>
+                        <p class="text-white mb-0">
+                            <strong>Email:</strong> privacy@tropicalburger.ph<br>
+                            <strong>Phone:</strong> +63 912 345 6789<br>
+                            <strong>Address:</strong> Tropical Burger Siquijor, Poblacion, Siquijor 6226, Philippines
+                        </p>
+                    </div>
+
+                    <p class="text-muted mt-4 small text-center">
+                        <i class='bx bx-info-circle me-1'></i>
+                        This Privacy Policy may be updated from time to time to reflect changes in our practices or for legal reasons. 
+                        Please check this page periodically to stay informed of any updates. Continued use of our services after changes 
+                        are posted constitutes acceptance of the updated policy.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ route('products.index') }}" class="btn btn-lg px-5 py-3 fw-bold text-white shadow-lg" 
+                   style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red)); border: none;">
+                    <i class='bx bxs-food-menu me-2'></i>Order Now
+                </a>
             </div>
         </div>
     </div>

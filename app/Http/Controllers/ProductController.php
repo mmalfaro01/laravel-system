@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('category')->latest();
+        $query = Product::latest();
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
@@ -20,14 +19,9 @@ class ProductController extends Controller
             });
         }
 
-        if ($request->has('category') && !empty($request->category)) {
-            $query->where('category_id', $request->category);
-        }
-
         $products = $query->paginate(12)->withQueryString();
-        $categories = Category::all();
 
-        return view('products.index', compact('products', 'categories'));
+        return view('products.index', compact('products'));
     }
 
     public function show(Product $product)

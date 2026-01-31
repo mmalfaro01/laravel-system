@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
-use App\Models\Admin;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Carbon;
@@ -57,8 +56,8 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::latest()->get();
-        $admins = Admin::latest()->get();
+        $users = User::where('is_admin', 0)->latest()->get();
+        $admins = User::where('is_admin', 1)->latest()->get();
         return view('admin.users.index', compact('users', 'admins'));
     }
 
@@ -71,14 +70,15 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admins,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        Admin::create([
+        User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'is_admin' => true,
         ]);
 
         return redirect()->route('admin.users')->with('success', 'Admin added successfully.');

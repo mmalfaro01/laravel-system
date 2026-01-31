@@ -21,12 +21,24 @@ class AdminLoginController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended(route('admin.dashboard'));
+        if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+            $user = Auth::guard('admin')->user();
+            
+            // Check if the authenticated user is an admin
+            if ($user && $user->is_admin == 1) {
+                $request->session()->regenerate();
+                return redirect()->route('admin.dashboard');
+            }
+
+            // If not an admin, logout and show error
+            Auth::guard('admin')->logout();
+            return back()->withErrors([
+                'email' => 'You are not authorized to access the admin panel.',
+            ])->withInput();
         }
 
         return back()->withErrors([
-            'email' => 'Invalid login credentials.',
+            'email' => 'Invalid email or password.',
         ])->withInput();
     }
 

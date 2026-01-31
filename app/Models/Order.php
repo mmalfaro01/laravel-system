@@ -13,11 +13,8 @@ class Order extends Model
         'user_id',
         'total',
         'status',
-        'payment_method',
-        'address',
         'shipping_option',
         'delivery_date',
-        'delivery_contact',
     ];
 
     public function user()
@@ -25,14 +22,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function items()
+    public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
     }
-    // App\Models\Order.php
-public function orderItems()
-{
-    return $this->hasMany(OrderItem::class);
-}
-
 }

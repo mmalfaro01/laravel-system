@@ -5,38 +5,46 @@
     .carousel-item img {
         height: 75vh;
         object-fit: cover;
+        filter: brightness(0.8);
     }
 
     .carousel-caption {
-        background: rgba(0, 0, 0, 0.65);
-        border-radius: 1rem;
-        padding: 2rem;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.9), rgba(231, 76, 60, 0.9));
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
 
     .carousel-indicators [data-bs-target] {
-        background-color: #28a745;
-        width: 12px;
-        height: 12px;
+        background-color: var(--tropical-yellow);
+        width: 15px;
+        height: 15px;
         border-radius: 50%;
+        border: 2px solid white;
     }
 
     .info-section {
-        background-color: #f8f9fa;
-        padding: 3rem 1.5rem;
-        border-radius: 1rem;
+        background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+        padding: 3rem 2rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        border: 3px solid var(--tropical-orange);
     }
 
     .info-section h2 {
-        font-weight: 700;
+        font-weight: 800;
+        color: var(--tropical-brown);
     }
 
     .info-section p {
-        font-size: 1.1rem;
+        font-size: 1.15rem;
+        color: #333;
     }
 
     .info-section .highlight {
-        color: #28a745;
-        font-weight: 600;
+        color: var(--tropical-orange);
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .link-card {
@@ -45,14 +53,24 @@
     }
 
     .link-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(255, 107, 53, 0.3);
     }
 
     .link-card .btn {
-        font-weight: 500;
-        padding: 0.4rem 1.2rem;
-        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .burger-icon {
+        font-size: 3rem;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
     }
 </style>
 
@@ -67,23 +85,26 @@
             <div class="carousel-item active">
                 <img src="{{ asset('images/slider/1.jpg') }}" class="d-block w-100" alt="Slide 1">
                 <div class="carousel-caption d-none d-md-block text-center">
-                    <h1 class="fw-bold text-white">Welcome to Veggie Shop</h1>
-                    <p>Your trusted online source for <strong>hydroponically grown</strong> produce.</p>
-                    <a href="{{ route('products.index') }}" class="btn btn-success btn-lg mt-3 px-4">Shop Now</a>
+                    <i class='bx bxs-burger burger-icon' style="color: var(--tropical-yellow);"></i>
+                    <h1 class="fw-bold text-white display-4">Welcome to Tropical Burger</h1>
+                    <p class="fs-4">Taste the <strong>Island Paradise</strong> in Every Bite! 🌴</p>
+                    <a href="{{ route('products.index') }}" class="btn btn-light btn-lg mt-3 px-5 fw-bold" style="color: var(--tropical-orange);">
+                        <i class='bx bx-menu me-2'></i>Order Now
+                    </a>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/slider/2.jpg') }}" class="d-block w-100" alt="Slide 2">
                 <div class="carousel-caption d-none d-md-block text-center">
-                    <h1 class="fw-bold text-white">Grown with Innovation</h1>
-                    <p>Efficient and sustainable farming powered by hydroponic systems.</p>
+                    <h1 class="fw-bold text-white display-4">Juicy Island Burgers 🍔</h1>
+                    <p class="fs-4">Crafted with Fresh Ingredients & Tropical Flavors</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{ asset('images/slider/3.jpg') }}" class="d-block w-100" alt="Slide 3">
                 <div class="carousel-caption d-none d-md-block text-center">
-                    <h1 class="fw-bold text-white">Fresh & Organic</h1>
-                    <p>Locally grown. Zero soil. Maximum freshness.</p>
+                    <h1 class="fw-bold text-white display-4">Fire-Grilled Perfection 🔥</h1>
+                    <p class="fs-4">100% Beef Patties. Authentic Caribbean Spices.</p>
                 </div>
             </div>
         </div>
@@ -95,86 +116,135 @@
         </div>
     </div>
 
-    {{-- 🧠 Info Section --}}
-    <div class="info-section shadow-sm mb-5">
-        <h2 class="text-center mb-4">Why Choose <span class="highlight">Local Hydroponic Produce?</span></h2>
-        <p>Supporting hydroponically grown local produce isn’t just about freshness — it’s about making a smart,
-            sustainable choice for the environment and your health.</p>
-        <p>By choosing <span class="highlight">Veggie Shop</span> products, you help support local farmers and reduce emissions.</p>
-        <ul>
-            <li>🌱 Grown in controlled environments</li>
-            <li>🚫 No harmful pesticides</li>
-            <li>💧 Uses 90% less water than traditional farming</li>
-            <li>🛒 Delivered fresh from smart farms to your table</li>
+    {{-- 🍔 Info Section --}}
+    <div class="info-section shadow-lg mb-5">
+        <h2 class="text-center mb-4">
+            <i class='bx bxs-hot fs-1 text-danger'></i> 
+            Why Choose <span class="highlight">Tropical Burger?</span>
+            <i class='bx bxs-hot fs-1 text-danger'></i>
+        </h2>
+        <p class="lead text-center mb-4">Experience the perfect blend of Caribbean flavors and American classics in every bite!</p>
+        <p>At <span class="highlight">Tropical Burger</span>, we bring you mouthwatering burgers infused with exotic island spices and fresh tropical ingredients.</p>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class='bx bxs-cheese text-warning fs-4 me-2'></i> <strong>100% Premium Beef</strong> - No fillers, just quality</li>
+                    <li class="mb-3"><i class='bx bxs-sun text-warning fs-4 me-2'></i> <strong>Tropical Marinades</strong> - Caribbean spice blends</li>
+                    <li class="mb-3"><i class='bx bxs-leaf text-success fs-4 me-2'></i> <strong>Fresh Toppings</strong> - Crisp lettuce, ripe tomatoes</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class='bx bxs-flame text-danger fs-4 me-2'></i> <strong>Fire-Grilled</strong> - Smoky perfection every time</li>
+                    <li class="mb-3"><i class='bx bxs-truck text-primary fs-4 me-2'></i> <strong>Fast Delivery</strong> - Hot and fresh to your door</li>
+                    <li class="mb-3"><i class='bx bxs-happy-heart-eyes text-danger fs-4 me-2'></i> <strong>Satisfaction Guaranteed</strong> - Love it or it's free!</li>
         </ul>
-        <div class="text-center mt-4">
-            <a href="{{ route('products.index') }}" class="btn btn-outline-success btn-lg">Explore Fresh Produce</a>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ route('products.index') }}" class="btn btn-lg px-5 fw-bold" 
+               style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red)); color: white; border: none; box-shadow: 0 4px 15px rgba(255,107,53,0.4);">
+                <i class='bx bx-food-menu me-2'></i>View Our Menu
+            </a>
         </div>
     </div>
 
-    {{-- 🎬 YouTube Carousel --}}
-    <div class="info-section shadow-sm my-5">
-        <h2 class="text-center mb-4">🎮 Watch Hydroponics in Action</h2>
+    {{-- 🍔 Featured Burgers Section --}}
+    <div class="info-section shadow-lg my-5">
+        <h2 class="text-center mb-4">
+            <i class='bx bxs-star text-warning fs-1'></i>
+            Our Signature Burgers
+            <i class='bx bxs-star text-warning fs-1'></i>
+        </h2>
+        <p class="text-center lead mb-5">Handcrafted masterpieces that will transport you to paradise! 🏝️</p>
 
-        <div id="youtubeCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner text-center">
-                <div class="carousel-item active">
-                    <div class="mx-auto" style="max-width: 768px;">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="https://www.youtube.com/embed/LGF33NN4B8U" allowfullscreen></iframe>
-                        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-body text-center p-4">
+                        <i class='bx bxs-cheese fs-1 mb-3' style="color: var(--tropical-yellow);"></i>
+                        <h4 class="fw-bold text-tropical">Island Classic</h4>
+                        <p class="text-muted">Juicy beef patty, cheddar cheese, fresh lettuce, tomato & our secret tropical sauce</p>
+                        <span class="badge bg-warning text-dark px-3 py-2">BESTSELLER</span>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="mx-auto" style="max-width: 768px;">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="https://www.youtube.com/embed/4LAWf9T4kRc" allowfullscreen></iframe>
                         </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-body text-center p-4">
+                        <i class='bx bxs-hot fs-1 mb-3' style="color: var(--tropical-red);"></i>
+                        <h4 class="fw-bold text-danger">Volcano Burger</h4>
+                        <p class="text-muted">Spicy jalapeños, pepper jack cheese, chipotle mayo & grilled pineapple rings</p>
+                        <span class="badge bg-danger px-3 py-2">SPICY! 🔥</span>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="mx-auto" style="max-width: 768px;">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="https://www.youtube.com/embed/2Oz_IiBxbqg" allowfullscreen></iframe>
                         </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="mx-auto" style="max-width: 768px;">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="https://www.youtube.com/embed/XkDpUi6KeDo" allowfullscreen></iframe>
-                        </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-body text-center p-4">
+                        <i class='bx bxs-crown fs-1 mb-3' style="color: var(--tropical-orange);"></i>
+                        <h4 class="fw-bold" style="color: var(--tropical-orange);">Paradise Premium</h4>
+                        <p class="text-muted">Double patty, bacon, avocado, caramelized onions & honey mustard glaze</p>
+                        <span class="badge bg-success px-3 py-2">PREMIUM</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <button class="carousel-control-prev" type="button" data-bs-target="#youtubeCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#youtubeCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-
-            <div class="text-center mt-4">
-                <a href="https://www.youtube.com/results?search_query=hydroponics+philippines" target="_blank" class="btn btn-outline-danger btn-lg">
-                    View More on YouTube
-                </a>
-            </div>
+        <div class="text-center mt-5">
+            <a href="{{ route('products.index') }}" class="btn btn-lg btn-warning fw-bold px-5 text-dark">
+                <i class='bx bx-cart-add me-2 fs-5'></i>Order Your Favorite Now!
+            </a>
         </div>
     </div>
 
-    {{-- 🏫 Siquijor State College Highlight --}}
-    <div class="info-section shadow-sm mb-5 text-center">
-        <h2 class="mb-3">🏫 Innovation at <span class="highlight">Siquijor State College</span></h2>
-        <p>
-            Siquijor State College leads the way in local food technology with its hydroponic greenhouse initiatives — 
-            bringing sustainable agriculture and education together.
-        </p>
-        <a href="https://siquijorstate.edu.ph/" class="btn btn-outline-success btn-lg" target="_blank">
-            Visit SSC Website
-        </a>
+    {{-- 🎬 Customer Reviews Section --}}
+    <div class="info-section shadow-lg mb-5">
+        <h2 class="text-center mb-4">
+            <i class='bx bxs-happy-heart-eyes text-danger fs-1'></i>
+            What Our Customers Say
+        </h2>
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="card border-0 bg-white p-4 h-100">
+                    <div class="mb-3">
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                    </div>
+                    <p class="fst-italic">"Best burger I've ever had! The tropical flavors are amazing!"</p>
+                    <p class="text-muted small mb-0">- Maria Santos</p>
+                </div>
+                        </div>
+            <div class="col-md-4">
+                <div class="card border-0 bg-white p-4 h-100">
+                    <div class="mb-3">
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                    </div>
+                    <p class="fst-italic">"The Volcano Burger is fire! 🔥 Perfect spice level!"</p>
+                    <p class="text-muted small mb-0">- Juan Dela Cruz</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 bg-white p-4 h-100">
+                    <div class="mb-3">
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                        <i class='bx bxs-star text-warning'></i>
+                    </div>
+                    <p class="fst-italic">"Fast delivery and always fresh. My family's favorite!"</p>
+                    <p class="text-muted small mb-0">- Lisa Reyes</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

@@ -79,14 +79,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($order->items as $item)
+                            @forelse($order->orderItems as $item)
                             <tr>
-                                <td>{{ $item->product->name }}</td>
+                                <td>{{ $item->product->name ?? 'Product not found' }}</td>
                                 <td>₱{{ number_format($item->price, 2) }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td class="text-end">₱{{ number_format($item->price * $item->quantity, 2) }}</td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">No items found in this order.</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                         <tfoot class="table-light">
                             <tr>

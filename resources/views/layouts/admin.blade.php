@@ -3,25 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>@yield('title') - Admin Panel | Veggie Shop</title>
+  <title>@yield('title') - Admin Panel | Tropical Burger</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ asset('images/favicon/faviccon.png') }}">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
+    :root {
+      --tropical-orange: #FF6B35;
+      --tropical-yellow: #FFD23F;
+      --tropical-red: #E74C3C;
+      --tropical-brown: #8B4513;
+    }
+
     body {
       display: flex;
       min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f9fa;
+      background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
     }
 
     .sidebar {
       width: 260px;
       transition: all 0.3s ease;
-      background: #fff;
-      border-right: 1px solid #e3e3e3;
+      background: linear-gradient(180deg, var(--tropical-orange) 0%, var(--tropical-red) 100%);
+      border-right: none;
       padding: 2rem 1rem;
       position: fixed;
       top: 0;
@@ -29,6 +39,7 @@
       left: 0;
       overflow-y: auto;
       z-index: 1030;
+      box-shadow: 4px 0 15px rgba(0,0,0,0.2);
     }
 
     .sidebar.collapsed {
@@ -50,27 +61,30 @@
     .nav-link {
       display: flex;
       align-items: center;
-      color: #333;
+      color: white;
       font-weight: 500;
-      padding: 0.6rem 1rem;
-      border-radius: 0.375rem;
+      padding: 0.8rem 1rem;
+      border-radius: 0.5rem;
       transition: 0.3s;
+      margin-bottom: 0.5rem;
     }
 
     .nav-link i {
       width: 25px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
 
     .nav-link:hover {
-      background-color: #f1f1f1;
-      color: #0d6efd;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--tropical-yellow);
+      transform: translateX(5px);
     }
 
     .nav-link.active {
-      background-color: #e7f1ff;
-      color: #0d6efd !important;
-      font-weight: 600;
+      background-color: rgba(255, 255, 255, 0.3);
+      color: var(--tropical-yellow) !important;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .content {
@@ -89,16 +103,17 @@
       top: 1rem;
       left: 260px;
       z-index: 1040;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border: none;
       border-radius: 50%;
-      background-color: #198754;
+      background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: left 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
     .sidebar.collapsed ~ .toggle-btn {
@@ -106,7 +121,17 @@
     }
 
     .toggle-btn:hover {
-      background-color: #157347;
+      background: linear-gradient(135deg, var(--tropical-red), var(--tropical-orange));
+      transform: scale(1.1);
+    }
+
+    .sidebar h4 {
+      color: white !important;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .content {
+      background: transparent;
     }
 
     @media (max-width: 768px) {
@@ -124,20 +149,21 @@
 <body>
 
   {{-- Sidebar --}}
-  <div id="adminSidebar" class="sidebar shadow-sm">
-    <h4 class="text-center">🥬 Veggie Shop</h4>
+  <div id="adminSidebar" class="sidebar">
+    <div class="text-center mb-4">
+      <i class='bx bxs-burger' style="font-size: 3rem; color: var(--tropical-yellow);"></i>
+      <h4 class="mt-2 fw-bold">Tropical Burger</h4>
+      <small class="text-white-50">Admin Dashboard</small>
+    </div>
+    <hr style="border-color: rgba(255,255,255,0.3);">
     <ul class="nav flex-column mt-4">
       @php
         $routes = [
           ['admin.dashboard', 'bxs-dashboard', 'Dashboard'],
           ['admin.products.index', 'bxs-cart', 'Products'],
           ['admin.users', 'bxs-user', 'Users'],
-          ['admin.orders', 'bx-receipt', 'Orders'],
-
-          ['admin.stores.index', 'bx-globe', 'Online Store'],
-          ['admin.reports', 'bxs-report', 'Reports'],
-          ['admin.settings', 'bxs-cog', 'Settings'],
-          ['admin.faq', 'bxs-help-circle', 'FAQs'],
+          ['admin.orders', 'bx-receipt', 'Orders'],        
+          ['admin.reports', 'bxs-report', 'Reports'],       
         ];
       @endphp
 
@@ -152,7 +178,7 @@
       <li class="nav-item mt-4">
         <form method="POST" action="{{ route('admin.logout') }}">
           @csrf
-          <button type="submit" class="btn btn-link nav-link text-danger">
+          <button type="submit" class="btn btn-link nav-link" style="color: var(--tropical-yellow); border: 2px solid rgba(255,255,255,0.3);">
             <i class='bx bx-log-out'></i> <span class="ms-2">Logout</span>
           </button>
         </form>

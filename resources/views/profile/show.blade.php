@@ -14,9 +14,9 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     @if(Auth::user()->profile_photo)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile Photo" class="img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src="{{ asset('images/profiles/' . Auth::user()->profile_photo) }}" alt="Profile Photo" class="img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                     @else
-                        <img src="https://via.placeholder.com/150" alt="Default Avatar" class="img-thumbnail mb-3">
+                        <img src="https://via.placeholder.com/150?text=No+Photo" alt="Default Avatar" class="img-thumbnail mb-3">
                     @endif
                     <h5 class="card-title">{{ Auth::user()->name }}</h5>
                     <p class="text-muted">{{ Auth::user()->email }}</p>

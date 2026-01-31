@@ -21,10 +21,8 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>SKU</th>
+                <th>Description</th>
                 <th>Price</th>
-                <th>Stock</th>
-                <th>Category</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -33,10 +31,8 @@
                 <tr>
                     <td><img src="{{ $product->image_url }}" alt="{{ $product->name }}" width="50"></td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->sku ?? 'N/A' }}</td>
+                    <td>{{ Str::limit($product->description, 50) }}</td>
                     <td>{{ $product->formatted_price }}</td>
-                    <td>{{ $product->stock }}</td>
-                    <td>{{ $product->category->name ?? 'Uncategorized' }}</td>
                     <td>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Delete this product?')">
@@ -48,7 +44,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted">No products found.</td>
+                    <td colspan="5" class="text-center text-muted">No products found.</td>
                 </tr>
             @endforelse
         </tbody>

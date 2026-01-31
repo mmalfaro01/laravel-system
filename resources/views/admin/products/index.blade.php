@@ -17,7 +17,7 @@
 
     {{-- 🔍 Search bar --}}
     <div class="mb-3">
-        <input type="text" class="form-control" id="productSearch" placeholder="Search products by name, SKU, or category...">
+        <input type="text" class="form-control" id="productSearch" placeholder="Search products by name or description...">
     </div>
 
     <div class="table-responsive">
@@ -25,10 +25,8 @@
             <thead class="table-light">
                 <tr>
                     <th>Name</th>
-                    <th>SKU</th>
+                    <th>Description</th>
                     <th>Price</th>
-                    <th>Stock</th>
-                    <th>Category</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -36,10 +34,8 @@
                 @forelse($products as $product)
                     <tr>
                         <td>{{ $product->name }}</td>
-                        <td>{{ $product->sku ?? 'N/A' }}</td>
+                        <td>{{ Str::limit($product->description, 50) }}</td>
                         <td>{{ $product->formatted_price }}</td>
-                        <td>{{ $product->stock }}</td>
-                        <td>{{ $product->category->name ?? 'Uncategorized' }}</td>
                         <td>
                             <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure to delete this product?')">
@@ -51,7 +47,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center text-muted">No products found.</td>
+                        <td colspan="4" class="text-center text-muted">No products found.</td>
                     </tr>
                 @endforelse
             </tbody>

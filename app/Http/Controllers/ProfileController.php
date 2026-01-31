@@ -23,13 +23,27 @@ public function update(Request $request)
     ]);
 
     $user = Auth::user();
+    
+    // Update basic fields
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->phone = $request->phone;
+    $user->address = $request->address;
 
+    // Handle profile photo upload
     if ($request->hasFile('profile_photo')) {
-        $path = $request->file('profile_photo')->store('profile_photos', 'public');
-        $user->profile_photo = $path;
+        // Delete old photo if exists
+        if ($user->profile_photo && file_exists(public_path('images/profiles/' . $user->profile_photo))) {
+            unlink(public_path('images/profiles/' . $user->profile_photo));
+        }
+        
+        // Store new photo
+        $filename = time() . '_' . $request->file('profile_photo')->getClientOriginalName();
+        $request->file('profile_photo')->move(public_path('images/profiles'), $filename);
+        $user->profile_photo = $filename;
     }
 
-    $user->update($request->only('name', 'email', 'phone', 'address'));
+    $user->save();
 
     return redirect()->back()->with('success', 'Profile updated successfully.');
 }

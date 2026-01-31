@@ -24,11 +24,9 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        $paymentMethod = $request->payment_method;
-
         $rules = [
             'payment_method'   => 'required|in:card,cod,gcash,paypal',
-            'shipping_option'  => 'required|in:now,schedule',
+            'shipping_option'  => 'nullable|in:now,schedule',
         ];
 
         // Validate delivery date if scheduled
@@ -36,7 +34,8 @@ class CheckoutController extends Controller
             $rules['delivery_date'] = 'required|date|after_or_equal:today';
         }
 
-        // Payment-specific validations
+        // Payment-specific validations (for display/processing purposes only)
+        $paymentMethod = $request->payment_method;
         if ($paymentMethod === 'cod') {
             $rules['cod_address'] = 'required|string|max:255';
             $rules['cod_name'] = 'required|string|max:255';
@@ -60,17 +59,17 @@ class CheckoutController extends Controller
         }
 
         try {
+            $total = array_reduce($cart, fn($carry, $item) => $carry + ($item['price'] * $item['quantity']), 0);
+            
             $order = Order::create([
                 'user_id'         => Auth::id(),
-                'address'         => $request->cod_address ?? 'N/A',
-                'payment_method'  => $paymentMethod,
-                'shipping_option' => $request->shipping_option,
-                'delivery_date'   => $request->shipping_option === 'schedule' ? $request->delivery_date : null,
+                'total'           => $total,
                 'status'          => 'pending',
-                'total'           => array_reduce($cart, fn($carry, $item) => $carry + ($item['price'] * $item['quantity']), 0),
+                'shipping_option' => $request->shipping_option ?? 'now',
+                'delivery_date'   => $request->shipping_option === 'schedule' ? $request->delivery_date : null,
             ]);
         } catch (\Exception $e) {
-            dd('Order creation failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Order creation failed: ' . $e->getMessage());
         }
 
         foreach ($cart as $productId => $item) {
@@ -81,14 +80,8 @@ class CheckoutController extends Controller
                     'quantity'   => $item['quantity'],
                     'price'      => $item['price'],
                 ]);
-
-                $product = Product::find($productId);
-                if ($product && isset($product->stock)) {
-                    $product->stock -= $item['quantity'];
-                    $product->save();
-                }
             } catch (\Exception $e) {
-                dd('Order item creation failed: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Order item creation failed: ' . $e->getMessage());
             }
         }
 
