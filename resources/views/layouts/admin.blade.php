@@ -3,170 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>@yield('title') - Admin Panel | Tropical Burger</title>
-
-  <!-- Favicon -->
+  <title>@yield('title') - Admin | Tropical Burger</title>
   <link rel="icon" type="image/png" href="{{ asset('images/favicon/faviccon.png') }}">
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <style>
     :root {
-      --tropical-orange: #FF6B35;
-      --tropical-yellow: #FFD23F;
-      --tropical-red: #E74C3C;
-      --tropical-brown: #8B4513;
+      --burger-pitch: #050303;
+      --burger-black: #0a0806;
+      --burger-dark: #1a1a1a;
+      --burger-orange: #f39a12;
+      --burger-gold: #ffcb72;
+      --burger-white: #ffffff;
+      --burger-muted: #b0aeab;
+      --burger-border: #2a2826;
     }
-
     body {
       display: flex;
       min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+      background: var(--burger-pitch);
+      color: var(--burger-white);
     }
-
     .sidebar {
       width: 260px;
       transition: all 0.3s ease;
-      background: linear-gradient(180deg, var(--tropical-orange) 0%, var(--tropical-red) 100%);
-      border-right: none;
-      padding: 2rem 1rem;
+      background: var(--burger-black);
+      border-right: 2px solid var(--burger-orange);
+      padding: 1.5rem 1rem;
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       overflow-y: auto;
       z-index: 1030;
-      box-shadow: 4px 0 15px rgba(0,0,0,0.2);
     }
-
-    .sidebar.collapsed {
-      width: 80px;
-      padding: 2rem 0.5rem;
-    }
-
-    .sidebar h4,
-    .sidebar .nav-link span {
-      transition: opacity 0.3s ease;
-    }
-
-    .sidebar.collapsed h4,
-    .sidebar.collapsed .nav-link span {
-      opacity: 0;
-      visibility: hidden;
-    }
-
+    .sidebar.collapsed { width: 72px; padding: 1.5rem 0.5rem; }
+    .sidebar h4, .sidebar .nav-link span { transition: opacity 0.3s ease; }
+    .sidebar.collapsed h4, .sidebar.collapsed .nav-link span { opacity: 0; visibility: hidden; }
+    .sidebar .brand-icon { font-size: 2rem; color: var(--burger-gold); }
+    .sidebar h4 { color: var(--burger-white); font-weight: 800; font-size: 1rem; }
+    .sidebar .brand-sub { color: var(--burger-muted); font-size: 0.75rem; }
+    .sidebar hr { border-color: var(--burger-border); }
     .nav-link {
       display: flex;
       align-items: center;
-      color: white;
+      color: var(--burger-muted);
       font-weight: 500;
-      padding: 0.8rem 1rem;
+      padding: 0.6rem 0.75rem;
       border-radius: 0.5rem;
-      transition: 0.3s;
-      margin-bottom: 0.5rem;
+      transition: 0.2s;
+      margin-bottom: 0.25rem;
+      text-decoration: none;
     }
-
-    .nav-link i {
-      width: 25px;
-      font-size: 1.3rem;
-    }
-
-    .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: var(--tropical-yellow);
-      transform: translateX(5px);
-    }
-
-    .nav-link.active {
-      background-color: rgba(255, 255, 255, 0.3);
-      color: var(--tropical-yellow) !important;
-      font-weight: 700;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
+    .nav-link i { width: 24px; font-size: 1.2rem; }
+    .nav-link:hover { background: var(--burger-dark); color: var(--burger-orange); }
+    .nav-link.active { background: var(--burger-dark); color: var(--burger-orange); font-weight: 700; border: 1px solid var(--burger-border); }
     .content {
       margin-left: 260px;
-      padding: 2rem;
+      padding: 1.25rem;
       transition: margin-left 0.3s ease;
       flex-grow: 1;
+      background: var(--burger-pitch);
     }
-
-    .sidebar.collapsed ~ .content {
-      margin-left: 80px;
-    }
-
+    .sidebar.collapsed ~ .content { margin-left: 72px; }
     .toggle-btn {
       position: fixed;
-      top: 1rem;
+      top: 0.75rem;
       left: 260px;
       z-index: 1040;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border: none;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
-      color: white;
+      border-radius: 0.5rem;
+      background: var(--burger-orange);
+      color: #1a1208;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: left 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
-
-    .sidebar.collapsed ~ .toggle-btn {
-      left: 80px;
-    }
-
-    .toggle-btn:hover {
-      background: linear-gradient(135deg, var(--tropical-red), var(--tropical-orange));
-      transform: scale(1.1);
-    }
-
-    .sidebar h4 {
-      color: white !important;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .content {
-      background: transparent;
-    }
-
+    .sidebar.collapsed ~ .toggle-btn { left: 72px; }
+    .toggle-btn:hover { background: #ff8c00; color: #1a1208; }
+    .content .card, .content .page-panel { background: var(--burger-dark); border: 1px solid var(--burger-border); color: var(--burger-white); }
+    .content .text-muted { color: var(--burger-muted) !important; }
     @media (max-width: 768px) {
-      .sidebar, .toggle-btn {
-        display: none;
-      }
-
-      .content {
-        margin-left: 0;
-        padding: 1.5rem;
-      }
+      .sidebar, .toggle-btn { display: none; }
+      .content { margin-left: 0; padding: 1rem; }
     }
   </style>
 </head>
 <body>
-
-  {{-- Sidebar --}}
   <div id="adminSidebar" class="sidebar">
-    <div class="text-center mb-4">
-      <i class='bx bxs-burger' style="font-size: 3rem; color: var(--tropical-yellow);"></i>
-      <h4 class="mt-2 fw-bold">Tropical Burger</h4>
-      <small class="text-white-50">Admin Dashboard</small>
+    <div class="text-center mb-3">
+      <i class='bx bxs-burger brand-icon'></i>
+      <h4 class="mt-2">Tropical Burger</h4>
+      <small class="brand-sub">Admin</small>
     </div>
-    <hr style="border-color: rgba(255,255,255,0.3);">
-    <ul class="nav flex-column mt-4">
+    <hr>
+    <ul class="nav flex-column mt-3">
       @php
         $routes = [
           ['admin.dashboard', 'bxs-dashboard', 'Dashboard'],
           ['admin.products.index', 'bxs-cart', 'Products'],
           ['admin.users', 'bxs-user', 'Users'],
-          ['admin.orders', 'bx-receipt', 'Orders'],        
-          ['admin.reports', 'bxs-report', 'Reports'],       
+          ['admin.orders', 'bx-receipt', 'Orders'],
+          ['admin.reports', 'bxs-report', 'Reports'],
         ];
       @endphp
-
       @foreach ($routes as [$route, $icon, $label])
         <li class="nav-item">
           <a href="{{ route($route) }}" class="nav-link {{ request()->routeIs($route) ? 'active' : '' }}">
@@ -174,37 +119,27 @@
           </a>
         </li>
       @endforeach
-
-      <li class="nav-item mt-4">
+      <li class="nav-item mt-3">
         <form method="POST" action="{{ route('admin.logout') }}">
           @csrf
-          <button type="submit" class="btn btn-link nav-link" style="color: var(--tropical-yellow); border: 2px solid rgba(255,255,255,0.3);">
+          <button type="submit" class="nav-link border-0 w-100 text-start bg-transparent" style="color: var(--burger-muted);">
             <i class='bx bx-log-out'></i> <span class="ms-2">Logout</span>
           </button>
         </form>
       </li>
     </ul>
   </div>
-
-  {{-- Toggle Button --}}
-  <button class="toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+  <button class="toggle-btn" onclick="toggleSidebar()" title="Toggle sidebar">
     <i class='bx bx-chevron-left'></i>
   </button>
-
-  {{-- Main Content --}}
   <div class="content" id="adminContent">
     @yield('content')
   </div>
-
-  {{-- Scripts --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
     function toggleSidebar() {
-      const sidebar = document.getElementById('adminSidebar');
-      const toggleBtn = document.querySelector('.toggle-btn');
-      const icon = toggleBtn.querySelector('i');
-      sidebar.classList.toggle('collapsed');
+      document.getElementById('adminSidebar').classList.toggle('collapsed');
+      const icon = document.querySelector('.toggle-btn i');
       icon.classList.toggle('bx-chevron-left');
       icon.classList.toggle('bx-chevron-right');
     }

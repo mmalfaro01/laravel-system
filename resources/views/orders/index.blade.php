@@ -1,31 +1,79 @@
 @extends('layouts.app')
 
+@section('title', 'My Orders - Tropical Burger')
+
 @section('content')
-<div class="container py-4">
+<style>
+    .page-panel { background: var(--burger-dark); border: 1px solid var(--burger-border); border-radius: 1.25rem; overflow: hidden; }
+    .page-panel-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--burger-border); }
+    .page-panel-header h1 { font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--burger-white); }
+    .page-panel-header p { margin: 0.25rem 0 0; color: var(--burger-muted); font-size: 0.9rem; }
 
-    {{-- Notifications disabled (table doesn't exist) --}}
+    /* TikTok Shop–style pill tabs */
+    .orders-tabs-wrap { background: var(--burger-black); padding: 0.75rem 1rem 1rem; border-bottom: 1px solid var(--burger-border); }
+    .orders-tabs { display: flex; gap: 0.5rem; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -ms-overflow-style: none; padding: 0.25rem 0; align-items: center; }
+    .orders-tabs::-webkit-scrollbar { display: none; }
+    .orders-tab {
+        flex: 0 0 auto; padding: 0.5rem 1rem; font-weight: 600; font-size: 0.875rem; text-decoration: none; white-space: nowrap;
+        border-radius: 999px; border: 1px solid var(--burger-border); background: var(--burger-dark); color: var(--burger-muted);
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .orders-tab:hover { color: var(--burger-white); border-color: var(--burger-muted); background: #252422; }
+    .orders-tab.active { background: var(--burger-orange); border-color: var(--burger-orange); color: #1a1208; }
 
-    {{-- Page Title --}}
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <h2 class="fw-bold text-primary">My Orders</h2>
-            <p class="text-muted">Review your past purchases and order status.</p>
+    .table-responsive { background: var(--burger-dark) !important; }
+    .orders-table { color: var(--burger-white); background: var(--burger-dark) !important; }
+    .orders-table thead { background: var(--burger-black); color: var(--burger-gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .orders-table thead th { border-color: var(--burger-border); padding: 0.65rem 0.75rem; font-weight: 700; background: var(--burger-black) !important; }
+    .orders-table tbody { background: var(--burger-dark) !important; }
+    .orders-table tbody td { border-color: var(--burger-border); padding: 0.75rem; vertical-align: middle; background: var(--burger-dark) !important; color: var(--burger-white); }
+    .orders-table tbody tr:hover { background: #252422 !important; }
+    .order-total { color: var(--burger-gold); font-weight: 700; }
+    .empty-orders { text-align: center; padding: 2.5rem 1.5rem; color: var(--burger-muted); }
+    .empty-orders a { color: var(--burger-orange); }
+    .orders-pagination { padding: 0.75rem 1.25rem; border-top: 1px solid var(--burger-border); background: var(--burger-dark); }
+    .orders-pagination .pagination { margin: 0; }
+    .orders-pagination .page-link { background: var(--burger-black); border-color: var(--burger-border); color: var(--burger-gold); }
+    .orders-pagination .page-item.active .page-link { background: var(--burger-orange); border-color: var(--burger-orange); color: #1a1208; }
+</style>
+
+<div class="container py-3">
+    <div class="page-panel">
+        <div class="page-panel-header">
+            <h1>My Orders</h1>
+            <p>Review your orders and status.</p>
         </div>
-    </div>
 
-    {{-- Orders Table --}}
-    <div class="row">
-        <div class="col-12">
-            @if($orders->count() > 0)
-            <div class="table-responsive shadow-sm rounded">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
+        @php
+            $tabs = [
+                null => 'All',
+                'pending' => 'Pending',
+                'processing' => 'Processing',
+                'shipped' => 'Shipped',
+                'completed' => 'Completed',
+                'cancelled' => 'Cancelled',
+            ];
+        @endphp
+        <div class="orders-tabs-wrap">
+            <nav class="orders-tabs" role="tablist">
+                @foreach($tabs as $tabStatus => $label)
+                    <a href="{{ route('orders.index', $tabStatus ? ['status' => $tabStatus] : []) }}" class="orders-tab {{ ($status ?? null) === $tabStatus ? 'active' : '' }}">
+                        {{ $label }}
+                    </a>
+                @endforeach
+            </nav>
+        </div>
+
+        @if($orders->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-borderless orders-table mb-0">
+                    <thead>
                         <tr>
-                            <th scope="col">Order #</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Status</th>
-                            <th scope="col" class="text-center">Actions</th>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,34 +81,36 @@
                         <tr>
                             <td><strong>#{{ $order->id }}</strong></td>
                             <td>{{ $order->created_at->format('M d, Y') }}</td>
-                            <td>₱{{ number_format($order->total, 2) }}</td>
+                            <td class="order-total">₱{{ number_format($order->total, 2) }}</td>
                             <td>
-                                <span class="badge bg-{{ $order->status == 'completed' ? 'success' : 'warning' }}">
-                                    {{ ucfirst($order->status) }}
-                                </span>
+                                @php
+                                    $badgeClass = match($order->status) {
+                                        'completed' => 'bg-success',
+                                        'shipped' => 'bg-info',
+                                        'processing' => 'bg-warning text-dark',
+                                        'cancelled' => 'bg-danger',
+                                        default => 'bg-warning text-dark',
+                                    };
+                                @endphp
+                                <span class="badge {{ $badgeClass }}">{{ ucfirst($order->status) }}</span>
                             </td>
-                            <td class="text-center">
-                                <a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-outline-primary">
-                                    View
-                                </a>
+                            <td class="text-end">
+                                <a href="{{ route('orders.show', $order) }}" class="btn btn-sm btn-outline-light border-secondary">View</a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-
-            {{-- Pagination --}}
-            <div class="mt-3">
+            <div class="orders-pagination">
                 {{ $orders->links('pagination::bootstrap-5') }}
             </div>
-            @else
-            <div class="alert alert-info text-center py-4">
-                <h5 class="mb-2">No orders yet</h5>
-                <p class="mb-0">You haven’t placed any orders yet. <a href="{{ route('products.index') }}" class="text-decoration-none fw-semibold">Start shopping now!</a></p>
+        @else
+            <div class="empty-orders">
+                <p class="mb-2">No orders {{ isset($status) ? 'in this tab' : 'yet' }}.</p>
+                <a href="{{ route('products.index') }}">Start shopping →</a>
             </div>
-            @endif
-        </div>
+        @endif
     </div>
 </div>
 @endsection

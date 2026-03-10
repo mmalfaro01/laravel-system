@@ -1,129 +1,69 @@
 @extends('layouts.app')
 
+@section('title', 'Menu - Tropical Burger')
+
 @section('content')
 <style>
-    .product-card {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .product-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(231,76,60,0.1));
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: 0;
-        pointer-events: none;
-    }
-    
-    .product-card:hover::before {
-        opacity: 1;
-    }
-    
-    .card-footer {
-        position: relative;
-        z-index: 10;
-    }
-
-    .badge-spicy {
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
+    .page-panel { background: var(--burger-dark); border: 1px solid var(--burger-border); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1rem; }
+    .page-panel h1 { font-size: 1.35rem; font-weight: 800; color: var(--burger-white); margin: 0 0 0.25rem; }
+    .page-panel .subtitle { color: var(--burger-muted); font-size: 0.9rem; margin: 0; }
+    .search-form .form-control { background: var(--burger-black); border-color: var(--burger-border); color: var(--burger-white); border-radius: 999px; }
+    .search-form .form-control:focus { border-color: var(--burger-orange); }
+    .product-card { background: var(--burger-black); border: 1px solid var(--burger-border); border-radius: 1rem; overflow: hidden; height: 100%; transition: border-color 0.2s; }
+    .product-card:hover { border-color: var(--burger-orange); }
+    .product-card .card-img-top { height: 180px; object-fit: cover; border-bottom: 1px solid var(--burger-border); }
+    .product-card .card-body { padding: 1rem; }
+    .product-card .card-title { font-size: 1.05rem; font-weight: 800; color: var(--burger-white); margin-bottom: 0.35rem; }
+    .product-card .card-text { font-size: 0.85rem; color: var(--burger-muted); margin-bottom: 0.75rem; }
+    .product-card .price { color: var(--burger-gold); font-weight: 800; font-size: 1.1rem; }
+    .product-card .card-footer { background: transparent; border-top: 1px solid var(--burger-border); padding: 0.75rem 1rem; display: flex; gap: 0.5rem; }
+    .product-card .btn { border-radius: 999px; font-size: 0.85rem; padding: 0.4rem 0.85rem; }
+    .empty-state { text-align: center; padding: 2.5rem; color: var(--burger-muted); }
 </style>
 
-<div class="container py-4">
-
-    <div class="text-center mb-5">
-        <i class='bx bxs-burger display-1 mb-3' style="color: var(--tropical-orange);"></i>
-        <h1 class="fw-bold display-4" style="color: var(--tropical-brown);">Our Burger Menu</h1>
-        <p class="lead" style="color: var(--tropical-orange);">🌴 Dive into a world of tropical flavors! 🍔</p>
-    </div>
-
-    {{-- Search Bar --}}
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-8">
-            <form action="{{ route('products.index') }}" method="GET" class="d-flex">
-                <input type="text" name="search" class="form-control me-2" placeholder="🔍 Search for your favorite burger..." value="{{ request('search') }}">
-                <button type="submit" class="btn btn-primary px-4">Search</button>
-            </form>
+<div class="container py-3">
+    <div class="page-panel d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3">
+        <div>
+            <h1>Our Menu</h1>
+            <p class="subtitle">Burgers and more</p>
         </div>
+        <form action="{{ route('products.index') }}" method="GET" class="search-form d-flex gap-2" style="max-width: 320px;">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Search..." value="{{ request('search') }}">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </form>
     </div>
 
-    {{-- Product List --}}
-    <div class="row">
+    <div class="row g-3">
         @forelse($products as $product)
-        <div class="col-md-4 mb-4 d-flex">
-            <div class="card shadow-lg w-100 product-card border-0">
-                <div class="position-absolute top-0 end-0 m-3" style="z-index: 2; pointer-events: none;">
-                    <span class="badge px-3 py-2" style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));">
-                        <i class='bx bxs-hot'></i> HOT
-                    </span>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card product-card border-0">
+                <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://via.placeholder.com/400x180?text=Burger' }}"
+                     alt="{{ $product->name }}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $product->name }}</h5>
+                    <p class="card-text">{{ Str::limit($product->description, 80) }}</p>
+                    <p class="price mb-0">₱{{ number_format($product->price, 2) }}</p>
                 </div>
-
-                <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://via.placeholder.com/400x300?text=Delicious+Burger' }}"
-                     alt="{{ $product->name }}"
-                     class="card-img-top"
-                     style="height: 280px; object-fit: cover; border-bottom: 4px solid var(--tropical-orange);">
-
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold" style="color: var(--tropical-brown);">
-                        <i class='bx bxs-burger me-2' style="color: var(--tropical-orange);"></i>
-                        {{ $product->name }}
-                    </h5>
-                    <p class="card-text text-muted small mb-3">
-                        {{ Str::limit($product->description, 100) }}
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="h4 fw-bold mb-0" style="color: var(--tropical-red);">
-                            ₱{{ number_format($product->price, 2) }}
-                        </p>
-                        <div class="text-warning">
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star-half'></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-footer bg-transparent border-0 d-flex justify-content-between p-3">
-                    <a href="{{ route('products.show', $product) }}" class="btn btn-outline-warning w-50 me-2 fw-semibold">
-                        <i class='bx bx-show-alt'></i> Details
-                    </a>
-                    <form action="{{ route('cart.add', $product) }}" method="POST" class="w-50">
+                <div class="card-footer">
+                    <a href="{{ route('products.show', $product) }}" class="btn btn-outline-light btn-sm flex-grow-1">Details</a>
+                    <form action="{{ route('cart.add', $product) }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="submit" class="btn w-100 text-white fw-bold" 
-                                style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red)); border: none;">
-                            <i class='bx bx-cart-add'></i> Add
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
                     </form>
                 </div>
             </div>
         </div>
         @empty
         <div class="col-12">
-            <div class="alert alert-warning text-center border-0 shadow-lg" 
-                 style="background: linear-gradient(135deg, #FFE4B5, #FFF8DC);">
-                <i class='bx bx-sad display-4' style="color: var(--tropical-orange);"></i>
-                <h4 class="mt-3">No burgers found!</h4>
-                <p>Check back soon for more delicious options.</p>
+            <div class="page-panel empty-state">
+                <p class="mb-2">No products found.</p>
+                <a href="{{ route('products.index') }}" class="btn btn-outline-light btn-sm">Clear search</a>
             </div>
         </div>
         @endforelse
     </div>
 
-    {{-- Pagination --}}
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center mt-3">
         {{ $products->links('pagination::bootstrap-5') }}
     </div>
 </div>

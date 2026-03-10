@@ -34,17 +34,7 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-      //  'google' => [
-        //'client_id' => '152677180305-bovtnokbnejf5j4svae8hms60hv1cnpq.apps.googleusercontent.com',
-        //'client_secret' => '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',
-        //'redirect' => 'http://localhost:8000/auth/google/callback',
-   // ],
-
-     //   'facebook' => [
-       // 'client_id' => env('9519495281485556'),
-        //'client_secret' => env('c2e71571ef0eb3fa685bae21387b109f'),
-        //'redirect' => env('FACEBOOK_REDIRECT_URI'),
-    //],
+     
         
 
     

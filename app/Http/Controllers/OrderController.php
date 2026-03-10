@@ -8,10 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Auth::user()->orders()->latest()->paginate(10);
-        return view('orders.index', compact('orders'));
+        $query = Auth::user()->orders()->latest();
+        $status = $request->get('status');
+        if ($status && in_array($status, ['pending', 'processing', 'shipped', 'completed', 'cancelled'], true)) {
+            $query->where('status', $status);
+        }
+        $orders = $query->paginate(10)->withQueryString();
+        return view('orders.index', compact('orders', 'status'));
     }
 
     public function show(Order $order)

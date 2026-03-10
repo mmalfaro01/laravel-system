@@ -4,258 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Tropical Burger</title>
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/favicon/faviccon.png') }}">
-
-    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Boxicons -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <style>
         :root {
-            --tropical-orange: #FF6B35;
-            --tropical-yellow: #FFD23F;
-            --tropical-red: #E74C3C;
-            --tropical-green: #27AE60;
-            --tropical-brown: #8B4513;
-            --tropical-light: #FFF8DC;
-            --tropical-cream: #FFE4B5;
-            --tropical-dark: #654321;
+            --burger-pitch: #050303;
+            --burger-black: #0a0806;
+            --burger-dark: #1a1a1a;
+            --burger-orange: #f39a12;
+            --burger-gold: #ffcb72;
+            --burger-white: #ffffff;
+            --burger-muted: #b0aeab;
+            --burger-border: #2a2826;
         }
-
         body {
-            background: linear-gradient(135deg, var(--tropical-orange) 0%, var(--tropical-red) 50%, var(--tropical-yellow) 100%);
+            background: var(--burger-pitch);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-            overflow: hidden;
+            color: var(--burger-white);
         }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="60" opacity="0.05">🍔</text></svg>');
-            background-size: 150px;
-            animation: float 20s infinite linear;
-            pointer-events: none;
-        }
-
-        @keyframes float {
-            from { background-position: 0 0; }
-            to { background-position: 150px 150px; }
-        }
-
-        .login-container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
-        }
-
+        .login-wrap { width: 100%; max-width: 400px; padding: 1rem; }
         .login-card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 3rem 2.5rem;
-            backdrop-filter: blur(10px);
-            border: 5px solid var(--tropical-yellow);
-            animation: slideIn 0.5s ease-out;
+            background: var(--burger-white);
+            border-radius: 1.5rem;
+            box-shadow: 0 24px 48px #000;
+            padding: 2rem;
+            color: #1a1a1a;
         }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .login-card .brand { text-align: center; margin-bottom: 1.25rem; }
+        .login-card .brand i { font-size: 2.5rem; color: var(--burger-orange); }
+        .login-card h1 { font-size: 1.35rem; font-weight: 800; color: var(--burger-dark); margin: 0 0 0.25rem; text-align: center; }
+        .login-card .subtitle { text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .login-card .form-label { font-weight: 600; color: #374151; font-size: 0.875rem; }
+        .login-card .form-control {
+            border: 2px solid #e5e7eb;
+            border-radius: 999px;
+            padding: 0.6rem 1rem;
+            background: #fff;
         }
-
-        .logo-container {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .burger-icon {
-            font-size: 5rem;
-            display: inline-block;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .login-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--tropical-brown);
-            text-align: center;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .login-subtitle {
-            text-align: center;
-            color: var(--tropical-orange);
-            font-weight: 600;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--tropical-brown);
-            margin-bottom: 0.5rem;
-        }
-
-        .input-group {
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border: 3px solid var(--tropical-orange);
-        }
-
-        .input-group-text {
-            background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
+        .login-card .form-control:focus { border-color: var(--burger-orange); box-shadow: 0 0 0 3px #3d2a0a; }
+        .login-card .form-check-label { color: #4b5563; }
+        .login-card .btn-login {
+            background: var(--burger-orange);
             border: none;
-            color: white;
-            font-size: 1.2rem;
-            padding: 0.75rem 1rem;
+            color: #1a1208;
+            font-weight: 700;
+            padding: 0.75rem;
+            border-radius: 999px;
+            width: 100%;
         }
-
-        .form-control {
-            border: none;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            background: var(--tropical-light);
-        }
-
-        .form-control:focus {
-            box-shadow: none;
-            background: white;
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));
-            border: none;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            padding: 1rem;
-            border-radius: 1rem;
-            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(255, 107, 53, 0.6);
-            background: linear-gradient(135deg, var(--tropical-red), var(--tropical-orange));
-        }
-
-        .btn-login:active {
-            transform: translateY(-1px);
-        }
-
-        .alert {
-            border-radius: 1rem;
-            border: none;
-            margin-bottom: 1.5rem;
-        }
-
-        .alert-danger {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-            color: white;
-            border-left: 5px solid #c92a2a;
-        }
-
-        .alert ul {
-            margin-bottom: 0;
-            padding-left: 1.5rem;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            color: var(--tropical-brown);
-            font-weight: 600;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-
-        .back-link a {
-            color: var(--tropical-orange);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .back-link a:hover {
-            color: var(--tropical-red);
-            transform: translateX(-5px);
-        }
-
-        .footer-text {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px dashed var(--tropical-cream);
-            color: var(--tropical-brown);
-            font-size: 0.9rem;
-        }
-
-        /* Floating elements */
-        .float-element {
-            position: absolute;
-            opacity: 0.1;
-            animation: rotate 20s infinite linear;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        .login-card .btn-login:hover { background: #ff8c00; color: #1a1208; }
+        .login-card .back-link { text-align: center; margin-top: 1.25rem; }
+        .login-card .back-link a { color: var(--burger-orange); font-weight: 600; text-decoration: none; }
+        .login-card .back-link a:hover { color: #ff8c00; }
+        .login-card .footer-text { text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 0.85rem; }
+        .login-card .alert-danger { background: #1a0a0a; border: 1px solid #e74c3c; color: #fca5a5; border-radius: 0.75rem; }
     </style>
 </head>
 <body>
-
-    <div class="login-container">
+    <div class="login-wrap">
         <div class="login-card">
-            <div class="logo-container">
-                <i class='bx bxs-burger burger-icon' style="color: var(--tropical-orange);"></i>
+            <div class="brand">
+                <i class='bx bxs-burger'></i>
             </div>
-
-            <h1 class="login-title">
-                <i class='bx bxs-shield-alt-2' style="color: var(--tropical-red);"></i>
-                Admin Panel
-            </h1>
-            <p class="login-subtitle">🌴 Tropical Burger Siquijor 🍔</p>
+            <h1>Admin</h1>
+            <p class="subtitle">Tropical Burger · Sign in</p>
 
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <strong><i class='bx bxs-error-circle me-2'></i>Oops!</strong>
-                    <ul>
+                <div class="alert alert-danger mb-3">
+                    <ul class="mb-0 small">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -265,68 +86,27 @@
 
             <form method="POST" action="{{ route('admin.login.submit') }}">
                 @csrf
-
-                <div class="mb-4">
-                    <label class="form-label">
-                        <i class='bx bxs-envelope me-1'></i>Email Address
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class='bx bxs-user'></i>
-                        </span>
-                        <input type="email" 
-                               name="email" 
-                               class="form-control" 
-                               placeholder="admin@tropicalburger.ph"
-                               value="{{ old('email') }}"
-                               required 
-                               autofocus>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="admin@example.com" value="{{ old('email') }}" required autofocus>
                 </div>
-
-                <div class="mb-4">
-                    <label class="form-label">
-                        <i class='bx bxs-lock-alt me-1'></i>Password
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class='bx bxs-key'></i>
-                        </span>
-                        <input type="password" 
-                               name="password" 
-                               class="form-control" 
-                               placeholder="Enter your password"
-                               required>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
-
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                    <label class="form-check-label" for="remember" style="color: var(--tropical-brown);">
-                        Remember me for 30 days
-                    </label>
+                    <label class="form-check-label" for="remember">Remember me</label>
                 </div>
-
-                <button type="submit" class="btn btn-login w-100">
-                    <i class='bx bxs-log-in-circle me-2 fs-5'></i>
-                    Login to Dashboard
-                </button>
+                <button type="submit" class="btn btn-login">Sign in</button>
             </form>
 
-            <div class="footer-text">
-                <i class='bx bxs-lock-alt me-1'></i>
-                Secure Admin Access Only
-            </div>
-
+            <p class="footer-text">Secure admin access</p>
             <div class="back-link">
-                <a href="{{ route('home') }}">
-                    <i class='bx bx-arrow-back'></i>
-                    Back to Website
-                </a>
+                <a href="{{ route('home') }}">← Back to site</a>
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

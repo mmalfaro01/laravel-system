@@ -3,169 +3,134 @@
 @section('title', 'Dashboard')
 
 @section('content')
-
 <style>
     .stat-card {
+        background: var(--burger-dark);
+        border: 1px solid var(--burger-border);
         border-radius: 1rem;
-        overflow: hidden;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s;
+        padding: 1rem;
+        transition: border-color 0.2s;
     }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
-    }
-
-    .stat-icon {
-        font-size: 3rem;
-        opacity: 0.8;
-    }
-
+    .stat-card:hover { border-color: var(--burger-orange); }
+    .stat-card h6 { color: var(--burger-muted); font-size: 0.8rem; margin-bottom: 0.25rem; }
+    .stat-card h3 { color: var(--burger-white); font-weight: 800; font-size: 1.35rem; margin: 0; }
+    .stat-card .stat-icon { font-size: 2rem; opacity: 0.9; }
     .chart-card {
-        background: white;
+        background: var(--burger-dark);
+        border: 1px solid var(--burger-border);
         border-radius: 1rem;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border: 3px solid var(--tropical-orange);
+        padding: 1.25rem;
     }
+    .chart-card h5 { color: var(--burger-gold); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .action-card {
+        background: var(--burger-dark);
+        border: 1px solid var(--burger-border);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        height: 100%;
+        text-align: center;
+    }
+    .action-card:hover { border-color: var(--burger-orange); }
+    .action-card .action-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .action-card h5 { color: var(--burger-white); font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .action-card p { color: var(--burger-muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+    .action-card .btn { border-radius: 999px; font-weight: 600; font-size: 0.875rem; }
 </style>
-<div class="container-fluid py-4">
 
-    {{-- Welcome Header --}}
-    <div class="alert border-0 shadow-lg mb-4" style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red)); color: white;">
-        <div class="d-flex align-items-center">
-            <i class='bx bxs-burger' style="font-size: 4rem; margin-right: 1.5rem;"></i>
-            <div>
-                <h3 class="fw-bold mb-1">Welcome to Tropical Burger Admin! 🍔</h3>
-                <p class="mb-0">Manage your tropical burger empire from here</p>
-            </div>
+<div class="container-fluid py-3">
+    <div class="d-flex align-items-center gap-3 mb-4 pb-2" style="border-bottom: 1px solid var(--burger-border);">
+        <i class='bx bxs-burger' style="font-size: 2rem; color: var(--burger-orange);"></i>
+        <div>
+            <h4 class="mb-0 fw-bold">Dashboard</h4>
+            <small class="text-muted">Overview</small>
         </div>
     </div>
 
-    {{-- Top Summary Card --}}
-    <div class="row mb-4">
+    <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card stat-card h-100" style="background: linear-gradient(135deg, #28a745, #20c997);">
-                <div class="card-body text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="mb-1 opacity-75">Total Earnings</h6>
-                            <h3 class="fw-bold">₱{{ number_format($earnings ?? 0, 2, '.', ',') }}</h3>
-                            <small class="badge bg-light text-success">
-                                ▲ {{ $growth ?? 0 }}%
-                            </small>
-                        </div>
-                        <div>
-                            <i class="bx bx-dollar stat-icon"></i>
-                        </div>
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6>Earnings</h6>
+                        <h3>₱{{ number_format($earnings ?? 0, 0, '.', ',') }}</h3>
+                        @if(isset($growth))
+                            <small class="text-success">▲ {{ $growth }}%</small>
+                        @endif
                     </div>
+                    <i class='bx bx-dollar stat-icon' style="color: #22c55e;"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card stat-card h-100" style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));">
-                <div class="card-body text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="mb-1 opacity-75">Total Burgers</h6>
-                            <h3 class="fw-bold">{{ \App\Models\Product::count() }}</h3>
-                            <small class="badge bg-light text-danger">Available</small>
-                        </div>
-                        <div>
-                            <i class='bx bxs-burger stat-icon'></i>
-                        </div>
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6>Products</h6>
+                        <h3>{{ \App\Models\Product::count() }}</h3>
                     </div>
+                    <i class='bx bxs-burger stat-icon' style="color: var(--burger-orange);"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card stat-card h-100" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
-                <div class="card-body text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="mb-1 opacity-75">Total Orders</h6>
-                            <h3 class="fw-bold">{{ \App\Models\Order::count() }}</h3>
-                            <small class="badge bg-light text-warning">All Time</small>
-                        </div>
-                        <div>
-                            <i class='bx bxs-shopping-bag stat-icon'></i>
-                        </div>
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6>Orders</h6>
+                        <h3>{{ \App\Models\Order::count() }}</h3>
                     </div>
+                    <i class='bx bxs-shopping-bag stat-icon' style="color: var(--burger-gold);"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card stat-card h-100" style="background: linear-gradient(135deg, #6f42c1, #5a32a3);">
-                <div class="card-body text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="mb-1 opacity-75">Happy Customers</h6>
-                            <h3 class="fw-bold">{{ \App\Models\User::count() }}</h3>
-                            <small class="badge bg-light text-purple">Registered</small>
-                        </div>
-                        <div>
-                            <i class='bx bxs-user-circle stat-icon'></i>
-                        </div>
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6>Users</h6>
+                        <h3>{{ \App\Models\User::count() }}</h3>
                     </div>
+                    <i class='bx bxs-user-circle stat-icon' style="color: #a78bfa;"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Monthly Earnings Chart --}}
     <div class="row mb-4">
         <div class="col-12">
             <div class="chart-card">
-                <h5 class="mb-4 fw-bold" style="color: var(--tropical-brown);">
-                    <i class='bx bx-line-chart me-2'></i>Monthly Burger Sales
-                </h5>
-                <canvas id="earningsChart" height="100"></canvas>
+                <h5><i class='bx bx-line-chart me-2'></i>Monthly sales</h5>
+                <canvas id="earningsChart" height="90"></canvas>
             </div>
         </div>
     </div>
 
-    {{-- Quick Actions --}}
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-lg h-100" style="border: 3px solid var(--tropical-orange) !important;">
-                <div class="card-body text-center p-4">
-                    <i class='bx bxs-food-menu' style="font-size: 4rem; color: var(--tropical-orange);"></i>
-                    <h5 class="fw-bold mt-3" style="color: var(--tropical-brown);">Manage Menu</h5>
-                    <p class="text-muted">Add or edit burger items</p>
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-warning text-dark fw-semibold">
-                        <i class='bx bx-edit'></i> View Products
-                    </a>
-                </div>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="action-card">
+                <i class='bx bxs-food-menu action-icon' style="color: var(--burger-orange);"></i>
+                <h5>Products</h5>
+                <p>Manage menu items</p>
+                <a href="{{ route('admin.products.index') }}" class="btn btn-warning text-dark">Products</a>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-lg h-100" style="border: 3px solid var(--tropical-green) !important;">
-                <div class="card-body text-center p-4">
-                    <i class='bx bxs-package' style="font-size: 4rem; color: var(--tropical-green);"></i>
-                    <h5 class="fw-bold mt-3" style="color: var(--tropical-brown);">Process Orders</h5>
-                    <p class="text-muted">{{ \App\Models\Order::where('status', 'pending')->count() }} pending orders</p>
-                    <a href="{{ route('admin.orders') }}" class="btn btn-success fw-semibold">
-                        <i class='bx bx-receipt'></i> View Orders
-                    </a>
-                </div>
+        <div class="col-md-4">
+            <div class="action-card">
+                <i class='bx bxs-package action-icon' style="color: #22c55e;"></i>
+                <h5>Orders</h5>
+                <p>{{ \App\Models\Order::where('status', 'pending')->count() }} pending</p>
+                <a href="{{ route('admin.orders') }}" class="btn btn-success">Orders</a>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-lg h-100" style="border: 3px solid var(--tropical-red) !important;">
-                <div class="card-body text-center p-4">
-                    <i class='bx bxs-user-account' style="font-size: 4rem; color: var(--tropical-red);"></i>
-                    <h5 class="fw-bold mt-3" style="color: var(--tropical-brown);">Manage Users</h5>
-                    <p class="text-muted">{{ \App\Models\User::count() }} registered customers</p>
-                    <a href="{{ route('admin.users') }}" class="btn btn-danger fw-semibold">
-                        <i class='bx bx-user'></i> View Users
-                    </a>
-                </div>
+        <div class="col-md-4">
+            <div class="action-card">
+                <i class='bx bxs-user-account action-icon' style="color: #e74c3c;"></i>
+                <h5>Users</h5>
+                <p>{{ \App\Models\User::count() }} registered</p>
+                <a href="{{ route('admin.users') }}" class="btn btn-danger">Users</a>
             </div>
         </div>
     </div>
-
 </div>
 @endsection
 
@@ -174,10 +139,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('earningsChart').getContext('2d');
-
     const earningsData = @json(array_values($monthlyEarnings->all()));
     const earningsLabels = @json(array_map(function($m) {
-        return \Carbon\Carbon::create()->month($m)->format('F');
+        return new Date(2000, parseInt($m, 10) - 1).toLocaleString('en', { month: 'short' });
     }, array_keys($monthlyEarnings->all())));
 
     new Chart(ctx, {
@@ -185,55 +149,31 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: earningsLabels,
             datasets: [{
-                label: 'Monthly Burger Sales (₱)',
+                label: 'Sales (₱)',
                 data: earningsData,
-                backgroundColor: 'rgba(255, 107, 53, 0.8)',
-                borderColor: 'rgba(231, 76, 60, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                hoverBackgroundColor: 'rgba(231, 76, 60, 0.9)'
+                backgroundColor: '#f39a12',
+                borderColor: '#ff8c00',
+                borderWidth: 1,
+                borderRadius: 6
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: '#8B4513',
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
-                    }
-                }
+                legend: { display: false }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    grid: {
-                        color: 'rgba(255, 107, 53, 0.1)'
-                    },
+                    grid: { color: '#2a2826' },
                     ticks: {
-                        callback: function(value) {
-                            return '₱' + value.toLocaleString();
-                        },
-                        color: '#8B4513',
-                        font: {
-                            weight: 'bold'
-                        }
+                        callback: v => '₱' + (v >= 1000 ? (v/1000)+'k' : v),
+                        color: '#b0aeab'
                     }
                 },
                 x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#8B4513',
-                        font: {
-                            weight: 'bold'
-                        }
-                    }
+                    grid: { display: false },
+                    ticks: { color: '#b0aeab' }
                 }
             }
         }
