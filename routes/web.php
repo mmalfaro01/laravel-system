@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
+use App\Models\Category;
+use App\Models\Product;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
@@ -18,7 +20,28 @@ use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\StoreProductController;
 
 // Public Home
-Route::get('/', fn () => view('welcome'))->name('home');
+Route::get('/', function () {
+    $burgersCategory = Category::where('slug', 'burgers')->first();
+    $snacksCategory  = Category::where('slug', 'snacks')->first();
+    $drinksCategory  = Category::where('slug', 'drinks')->first();
+
+    $burgers = $burgersCategory
+        ? $burgersCategory->products()->latest()->take(8)->get()
+        : collect();
+
+    $snacks = $snacksCategory
+        ? $snacksCategory->products()->latest()->take(8)->get()
+        : collect();
+
+    $drinks = $drinksCategory
+        ? $drinksCategory->products()->latest()->take(8)->get()
+        : collect();
+
+    // Featured product for hero (first burger, or any product)
+    $featured = $burgers->first() ?: Product::latest()->first();
+
+    return view('welcome', compact('burgers', 'snacks', 'drinks', 'featured'));
+})->name('home');
 
 // Auth routes for users
 Auth::routes();

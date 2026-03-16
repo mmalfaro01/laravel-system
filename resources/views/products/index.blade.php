@@ -19,13 +19,37 @@
     .product-card .card-footer { background: transparent; border-top: 1px solid var(--burger-border); padding: 0.75rem 1rem; display: flex; gap: 0.5rem; }
     .product-card .btn { border-radius: 999px; font-size: 0.85rem; padding: 0.4rem 0.85rem; }
     .empty-state { text-align: center; padding: 2.5rem; color: var(--burger-muted); }
+    .menu-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+    .menu-tab { padding: 0.3rem 0.9rem; border-radius: 999px; border: 1px solid var(--burger-border); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--burger-muted); text-decoration: none; }
+    .menu-tab.active, .menu-tab:hover { border-color: var(--burger-orange); color: var(--burger-white); background: var(--burger-dark); }
 </style>
 
 <div class="container py-3">
     <div class="page-panel d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3">
         <div>
             <h1>Our Menu</h1>
-            <p class="subtitle">Burgers and more</p>
+            <p class="subtitle">Burgers, snacks, and drinks</p>
+            <div class="menu-tabs">
+                @php
+                    $tabs = [
+                        'all' => 'All',
+                        'burgers' => 'Burgers',
+                        'snacks' => 'Snacks',
+                        'drinks' => 'Drinks',
+                    ];
+                @endphp
+                @foreach($tabs as $slug => $label)
+                    @php
+                        $isActive = ($slug === 'all' && empty($activeCategorySlug)) || $activeCategorySlug === $slug;
+                        $url = $slug === 'all'
+                            ? route('products.index', array_filter(['search' => request('search')]))
+                            : route('products.index', array_filter(['category' => $slug, 'search' => request('search')]));
+                    @endphp
+                    <a href="{{ $url }}" class="menu-tab {{ $isActive ? 'active' : '' }}">
+                        {{ $label }}
+                    </a>
+                @endforeach
+            </div>
         </div>
         <form action="{{ route('products.index') }}" method="GET" class="search-form d-flex gap-2" style="max-width: 320px;">
             <input type="text" name="search" class="form-control form-control-sm" placeholder="Search..." value="{{ request('search') }}">

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::latest();
+        $query = Product::with('category')->latest();
+
+        $activeCategorySlug = $request->get('category');
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
@@ -19,9 +22,24 @@ class ProductController extends Controller
             });
         }
 
+        if ($activeCategorySlug) {
+            $query->whereHas('category', function ($q) use ($activeCategorySlug) {
+                $q->where('slug', $activeCategorySlug);
+            });
+        }
+
         $products = $query->paginate(12)->withQueryString();
 
-        return view('products.index', compact('products'));
+        $menuCategories = Category::whereIn('slug', ['burgers', 'snacks', 'drinks'])
+            ->orderBy('name')
+            ->get()
+            ->keyBy('slug');
+
+        return view('products.index', [
+            'products' => $products,
+            'activeCategorySlug' => $activeCategorySlug,
+            'menuCategories' => $menuCategories,
+        ]);
     }
 
     public function show(Product $product)

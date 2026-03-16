@@ -14,6 +14,7 @@ class Product extends Model
         'description',
         'price',
         'image',
+        'category_id',
     ];
 
 
@@ -34,5 +35,10 @@ class Product extends Model
         return $this->image && file_exists(public_path('images/products/' . $this->image))
             ? asset('images/products/' . $this->image)
             : asset('images/default.png'); // fallback image
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

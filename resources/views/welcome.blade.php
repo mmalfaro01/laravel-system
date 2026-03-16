@@ -4,14 +4,6 @@
 
 @section('content')
 @php
-    use App\Models\Product;
-
-    // Products for main grid
-    $products = Product::orderByDesc('created_at')->take(12)->get();
-
-    // Featured hero burger (first product or null)
-    $featured = $products->first();
-
     $placeholder = asset('images/default.png');
     $featuredImage = $featured && $featured->image
         ? asset('images/products/' . $featured->image)
@@ -229,6 +221,8 @@
         border: 1px solid #262626;
         color: var(--muted);
         text-decoration: none;
+        cursor: pointer;
+        background: transparent;
     }
 
     .catalog-tab.active,
@@ -395,46 +389,149 @@
     {{-- CATALOG --}}
     <section class="catalog-panel">
         <div class="catalog-header">
-            <h2>Our Burgers</h2>
-            <div class="catalog-tabs">
-                <span class="catalog-tab active">Burgers</span>
-                <span class="catalog-tab">Snacks</span>
-                <span class="catalog-tab">Drinks</span>
+            <h2>Our Menu</h2>
+            <div class="catalog-tabs" id="catalogTabs">
+                <button type="button" class="catalog-tab active" data-category="burgers">Burgers</button>
+                <button type="button" class="catalog-tab" data-category="snacks">Snacks</button>
+                <button type="button" class="catalog-tab" data-category="drinks">Drinks</button>
             </div>
         </div>
 
-        <div class="product-grid">
-            @forelse($products as $product)
-                @php
-                    $img = $product->image
-                        ? asset('images/products/' . $product->image)
-                        : $placeholder;
-                @endphp
-                <article class="product-card">
-                    <img src="{{ $img }}" alt="{{ $product->name }}">
-                    <h3 class="product-name">{{ $product->name }}</h3>
-                    <p class="product-desc">
-                        {{ \Illuminate\Support\Str::limit($product->description, 80) }}
-                    </p>
-                    <div class="product-meta">
-                        <div class="product-price">
-                            {{ $product->formatted_price }}
+        {{-- Burgers --}}
+        @if($burgers->count())
+            <h3 class="mt-2 mb-2" style="font-size: 1rem; font-weight: 700;">Burgers</h3>
+            <div class="product-grid mb-4 catalog-section" data-category="burgers">
+                @foreach($burgers as $product)
+                    @php
+                        $img = $product->image
+                            ? asset('images/products/' . $product->image)
+                            : $placeholder;
+                    @endphp
+                    <article class="product-card">
+                        <img src="{{ $img }}" alt="{{ $product->name }}">
+                        <h3 class="product-name">{{ $product->name }}</h3>
+                        <p class="product-desc">
+                            {{ \Illuminate\Support\Str::limit($product->description, 80) }}
+                        </p>
+                        <div class="product-meta">
+                            <div class="product-price">
+                                {{ $product->formatted_price }}
+                            </div>
+                            <div class="product-cta-row">
+                                <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
+                                <form action="{{ route('cart.add', $product) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-card btn-card-main">
+                                        Add to cart
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="product-cta-row">
-                            <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
-                            <form action="{{ route('cart.add', $product) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn-card btn-card-main">
-                                    Add to cart
-                                </button>
-                            </form>
+                    </article>
+                @endforeach
+            </div>
+        @endif
+
+        {{-- Snacks --}}
+        @if($snacks->count())
+            <h3 class="mt-2 mb-2" style="font-size: 1rem; font-weight: 700;">Snacks</h3>
+            <div class="product-grid mb-4 catalog-section" data-category="snacks">
+                @foreach($snacks as $product)
+                    @php
+                        $img = $product->image
+                            ? asset('images/products/' . $product->image)
+                            : $placeholder;
+                    @endphp
+                    <article class="product-card">
+                        <img src="{{ $img }}" alt="{{ $product->name }}">
+                        <h3 class="product-name">{{ $product->name }}</h3>
+                        <p class="product-desc">
+                            {{ \Illuminate\Support\Str::limit($product->description, 80) }}
+                        </p>
+                        <div class="product-meta">
+                            <div class="product-price">
+                                {{ $product->formatted_price }}
+                            </div>
+                            <div class="product-cta-row">
+                                <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
+                                <form action="{{ route('cart.add', $product) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-card btn-card-main">
+                                        Add to cart
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </article>
-            @empty
-                <p class="text-center text-muted mb-0">No burgers yet – add some products in the admin panel.</p>
-            @endforelse
-        </div>
+                    </article>
+                @endforeach
+            </div>
+        @endif
+
+        {{-- Drinks --}}
+        @if($drinks->count())
+            <h3 class="mt-2 mb-2" style="font-size: 1rem; font-weight: 700;">Drinks</h3>
+            <div class="product-grid catalog-section" data-category="drinks">
+                @foreach($drinks as $product)
+                    @php
+                        $img = $product->image
+                            ? asset('images/products/' . $product->image)
+                            : $placeholder;
+                    @endphp
+                    <article class="product-card">
+                        <img src="{{ $img }}" alt="{{ $product->name }}">
+                        <h3 class="product-name">{{ $product->name }}</h3>
+                        <p class="product-desc">
+                            {{ \Illuminate\Support\Str::limit($product->description, 80) }}
+                        </p>
+                        <div class="product-meta">
+                            <div class="product-price">
+                                {{ $product->formatted_price }}
+                            </div>
+                            <div class="product-cta-row">
+                                <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
+                                <form action="{{ route('cart.add', $product) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-card btn-card-main">
+                                        Add to cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @endif
+
+        @if(!$burgers->count() && !$snacks->count() && !$drinks->count())
+            <p class="text-center text-muted mb-0">No products yet – add some items in the admin panel.</p>
+        @endif
     </section>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var tabs = document.querySelectorAll('#catalogTabs .catalog-tab');
+    var sections = document.querySelectorAll('.catalog-section');
+
+    if (!tabs.length || !sections.length) return;
+
+    function setActive(category) {
+        tabs.forEach(function (tab) {
+            tab.classList.toggle('active', tab.getAttribute('data-category') === category);
+        });
+        sections.forEach(function (section) {
+            var matches = section.getAttribute('data-category') === category;
+            section.style.display = matches ? '' : 'none';
+        });
+    }
+
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            setActive(tab.getAttribute('data-category'));
+        });
+    });
+
+    // Default to burgers
+    setActive('burgers');
+});
+</script>
 @endsection

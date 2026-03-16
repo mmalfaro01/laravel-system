@@ -26,6 +26,37 @@
       background: var(--burger-pitch);
       color: var(--burger-white);
     }
+    /* Dark cards, tables, form fields in admin */
+.content .card {
+  background: var(--burger-dark);
+  border: 1px solid var(--burger-border);
+  color: var(--burger-white);
+}
+
+.content .table {
+  color: var(--burger-white);
+}
+
+.content .table thead {
+  background: var(--burger-black);
+}
+
+.content .form-control,
+.content .form-select {
+  background: var(--burger-dark);
+  border-color: var(--burger-border);
+  color: var(--burger-white);
+}
+
+.content .form-control:focus,
+.content .form-select:focus {
+  border-color: var(--burger-orange);
+  box-shadow: 0 0 0 0.2rem rgba(243, 154, 18, 0.25);
+}
+
+.content .form-control::placeholder {
+  color: var(--burger-muted);
+}
     .sidebar {
       width: 260px;
       transition: all 0.3s ease;

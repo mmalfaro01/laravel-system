@@ -32,6 +32,20 @@
                     <input type="number" step="0.01" name="price" class="form-control" value="{{ old('price', $product->price) }}" required>
                 </div>
 
+                {{-- Category --}}
+                <div class="mb-3">
+                    <label for="category_id" class="form-label fw-semibold">Category</label>
+                    <select name="category_id" id="category_id" class="form-select">
+                        <option value="">Select category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 {{-- Image Upload --}}
                 <div class="mb-3">
                     <label for="image" class="form-label fw-semibold">Product Image</label>

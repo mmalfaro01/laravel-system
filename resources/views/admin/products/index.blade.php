@@ -25,6 +25,7 @@
             <thead class="table-light">
                 <tr>
                     <th>Name</th>
+                    <th>Category</th>
                     <th>Description</th>
                     <th>Price</th>
                     <th>Actions</th>
@@ -34,6 +35,7 @@
                 @forelse($products as $product)
                     <tr>
                         <td>{{ $product->name }}</td>
+                        <td>{{ optional($product->category)->name ?? '-' }}</td>
                         <td>{{ Str::limit($product->description, 50) }}</td>
                         <td>{{ $product->formatted_price }}</td>
                         <td>
