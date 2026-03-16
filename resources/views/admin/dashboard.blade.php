@@ -139,10 +139,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('earningsChart').getContext('2d');
-    const earningsData = @json(array_values($monthlyEarnings->all()));
-    const earningsLabels = @json(array_map(function($m) {
-        return new Date(2000, parseInt($m, 10) - 1).toLocaleString('en', { month: 'short' });
-    }, array_keys($monthlyEarnings->all())));
+    var earningsData = <?php echo json_encode(array_values($monthlyEarnings->all())); ?>;
+    var earningsLabels = <?php echo json_encode(array_map(function ($m) { return \Carbon\Carbon::create()->month((int) $m)->format('M'); }, array_keys($monthlyEarnings->all()))); ?>;
 
     new Chart(ctx, {
         type: 'bar',

@@ -3,24 +3,71 @@
 @section('title', 'Privacy Policy - Tropical Burger Siquijor')
 
 @section('content')
+<style>
+    .privacy-title {
+        color: var(--burger-white);
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .privacy-muted {
+        color: var(--burger-muted) !important;
+    }
+
+    .privacy-card {
+        background: var(--burger-dark);
+        border-radius: 1.25rem;
+        border: 1px solid var(--burger-border);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .privacy-block {
+        background: rgba(243, 154, 18, 0.08);
+        border-left: 4px solid var(--burger-orange);
+        border-radius: 1rem;
+        color: var(--burger-muted);
+    }
+
+    .privacy-block h5 {
+        color: var(--burger-gold);
+    }
+
+    .privacy-accent-green {
+        border-left-color: #22c55e;
+    }
+
+    .privacy-accent-red {
+        border-left-color: #ef4444;
+    }
+
+    .privacy-accent-yellow {
+        border-left-color: var(--burger-gold);
+    }
+
+    .privacy-footer-cta {
+        background: linear-gradient(135deg, var(--burger-orange), #ff6b3d);
+        border-radius: 1.25rem;
+        border: 1px solid var(--burger-border);
+    }
+</style>
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="mb-5 text-center">
                 <i class='bx bxs-shield-alt-2 display-1 mb-3' style="color: var(--tropical-orange);"></i>
-                <h1 class="fw-bold" style="color: var(--tropical-brown);">Privacy Policy</h1>
-                <p class="text-muted">Last updated: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
+                <h1 class="fw-bold privacy-title">Privacy Policy</h1>
+                <p class="privacy-muted">Last updated: {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
             </div>
 
-            <div class="card border-0 shadow-lg">
+            <div class="card border-0 shadow-lg privacy-card">
                 <div class="card-body p-5">
                     <p class="mb-4" style="font-size: 1.1rem;">
                         At <strong>Tropical Burger Siquijor</strong>, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal information when you order from us online or visit our restaurant.
                     </p>
 
-                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-orange);">
-                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
-                            <i class='bx bxs-user-detail me-2' style="color: var(--tropical-orange);"></i>Information We Collect
+                    <div class="mb-4 p-3 rounded privacy-block">
+                        <h5 class="fw-bold">
+                            <i class='bx bxs-user-detail me-2' style="color: var(--burger-orange);"></i>Information We Collect
                         </h5>
                         <ul class="list-unstyled ps-3 mb-0">
                             <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Name and contact details (email, phone number)</li>
@@ -31,9 +78,9 @@
                         </ul>
                     </div>
 
-                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-green);">
-                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
-                            <i class='bx bxs-cog me-2' style="color: var(--tropical-green);"></i>How We Use Your Information
+                    <div class="mb-4 p-3 rounded privacy-block privacy-accent-green">
+                        <h5 class="fw-bold">
+                            <i class='bx bxs-cog me-2' style="color: #22c55e;"></i>How We Use Your Information
                         </h5>
                         <ul class="list-unstyled ps-3 mb-0">
                             <li class="mb-2"><i class='bx bx-check text-success me-2'></i> To process your orders and manage deliveries</li>
@@ -44,9 +91,9 @@
                         </ul>
                     </div>
 
-                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-red);">
-                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
-                            <i class='bx bxs-lock-alt me-2' style="color: var(--tropical-red);"></i>Data Protection & Security
+                    <div class="mb-4 p-3 rounded privacy-block privacy-accent-red">
+                        <h5 class="fw-bold">
+                            <i class='bx bxs-lock-alt me-2' style="color: #ef4444;"></i>Data Protection & Security
                         </h5>
                         <p class="mb-0">
                             We implement appropriate technical and organizational security measures to protect your personal data against unauthorized access, 
@@ -55,9 +102,9 @@
                         </p>
                     </div>
 
-                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-yellow);">
-                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
-                            <i class='bx bxs-group me-2' style="color: var(--tropical-orange);"></i>Third-Party Sharing
+                    <div class="mb-4 p-3 rounded privacy-block privacy-accent-yellow">
+                        <h5 class="fw-bold">
+                            <i class='bx bxs-group me-2' style="color: var(--burger-orange);"></i>Third-Party Sharing
                         </h5>
                         <p class="mb-0">
                             We do not sell, trade, or rent your personal information to third parties. We may share your data only with trusted service providers 
@@ -66,9 +113,9 @@
                         </p>
                     </div>
 
-                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-green);">
-                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
-                            <i class='bx bxs-user-check me-2' style="color: var(--tropical-green);"></i>Your Rights
+                    <div class="mb-4 p-3 rounded privacy-block privacy-accent-green">
+                        <h5 class="fw-bold">
+                            <i class='bx bxs-user-check me-2' style="color: #22c55e;"></i>Your Rights
                         </h5>
                         <ul class="list-unstyled ps-3 mb-0">
                             <li class="mb-2"><i class='bx bx-check text-success me-2'></i> <strong>Access:</strong> Request a copy of your personal data</li>
@@ -78,9 +125,9 @@
                         </ul>
                     </div>
 
-                    <div class="mb-4 p-3 rounded" style="background: #FFF8DC; border-left: 5px solid var(--tropical-orange);">
-                        <h5 class="fw-bold" style="color: var(--tropical-brown);">
-                            <i class='bx bxs-cookie me-2' style="color: var(--tropical-orange);"></i>Cookies
+                    <div class="mb-4 p-3 rounded privacy-block">
+                        <h5 class="fw-bold">
+                            <i class='bx bxs-cookie me-2' style="color: var(--burger-orange);"></i>Cookies
                         </h5>
                         <p class="mb-0">
                             Our website uses cookies to enhance your browsing experience, remember your preferences, and analyze site traffic. 
@@ -89,7 +136,7 @@
                         </p>
                     </div>
 
-                    <div class="alert border-0" style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red));">
+                    <div class="alert border-0 privacy-footer-cta">
                         <h5 class="fw-bold text-white mb-3">
                             <i class='bx bxs-envelope me-2'></i>Contact Us About Privacy
                         </h5>
@@ -103,7 +150,7 @@
                         </p>
                     </div>
 
-                    <p class="text-muted mt-4 small text-center">
+                    <p class="privacy-muted mt-4 small text-center">
                         <i class='bx bx-info-circle me-1'></i>
                         This Privacy Policy may be updated from time to time to reflect changes in our practices or for legal reasons. 
                         Please check this page periodically to stay informed of any updates. Continued use of our services after changes 
@@ -114,7 +161,7 @@
 
             <div class="text-center mt-4">
                 <a href="{{ route('products.index') }}" class="btn btn-lg px-5 py-3 fw-bold text-white shadow-lg" 
-                   style="background: linear-gradient(135deg, var(--tropical-orange), var(--tropical-red)); border: none;">
+                   style="background: linear-gradient(135deg, var(--burger-orange), #ff6b3d); border-radius: 999px; border: none;">
                     <i class='bx bxs-food-menu me-2'></i>Order Now
                 </a>
             </div>
