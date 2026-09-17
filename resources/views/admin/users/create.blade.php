@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Add User')
+@section('title', 'Add Staff')
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">Add New User</h2>
+    <h2 class="mb-4">Add New Account</h2>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -39,7 +39,16 @@
             <input type="password" name="password_confirmation" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Create User</button>
+        <div class="mb-3">
+            <label for="role" class="form-label">Account Type</label>
+            <select name="role" class="form-select" required>
+                <option value="admin" {{ old('role', 'admin') === 'admin' ? 'selected' : '' }}>Admin</option>
+                <option value="driver" {{ old('role') === 'driver' ? 'selected' : '' }}>Driver</option>
+                <option value="staff" {{ old('role') === 'staff' ? 'selected' : '' }}>Staff</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Account</button>
         <a href="{{ route('admin.users') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

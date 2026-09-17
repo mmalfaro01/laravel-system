@@ -15,6 +15,8 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Driver\Auth\DriverLoginController;
+use App\Http\Controllers\Driver\DriverController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\StoreProductController;
@@ -110,11 +112,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // User Management (Users tab)
         Route::get('users', [AdminController::class, 'users'])->name('users');
+        Route::get('users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+        Route::put('users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
         Route::delete('users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
 
         // Admin Management (Admins tab)
         Route::get('admins/create', [AdminController::class, 'createAdmin'])->name('admins.create');
         Route::post('admins', [AdminController::class, 'storeAdmin'])->name('admins.store');
+        Route::get('staff/create', [AdminController::class, 'createStaff'])->name('staff.create');
+        Route::post('staff', [AdminController::class, 'storeStaff'])->name('staff.store');
+
+        // Driver Management (Drivers tab)
+        Route::get('drivers/create', [AdminController::class, 'createDriver'])->name('drivers.create');
+        Route::post('drivers', [AdminController::class, 'storeDriver'])->name('drivers.store');
 
         // Reseller Store Management
         Route::resource('stores', StoreController::class);
@@ -124,6 +134,45 @@ Route::get('orders', [AdminController::class, 'manageOrders'])->name('orders');
 Route::get('orders/{order}/edit', [AdminController::class, 'editOrder'])->name('orders.edit');
 Route::put('orders/{order}', [AdminController::class, 'updateOrder'])->name('orders.update');
 
+    // Admin Messages
+    Route::get('messages', [AdminController::class, 'messages'])->name('messages');
+    Route::get('messages/{message}', [AdminController::class, 'showMessage'])->name('messages.show');
+    Route::delete('messages/{message}', [AdminController::class, 'destroyMessage'])->name('messages.destroy');
+
+    });
+});
+
+// Staff Routes
+Route::prefix('staff')->name('staff.')->group(function () {
+    Route::get('login', [App\Http\Controllers\Staff\Auth\StaffLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [App\Http\Controllers\Staff\Auth\StaffLoginController::class, 'login'])->name('login.submit');
+    Route::post('logout', [App\Http\Controllers\Staff\Auth\StaffLoginController::class, 'logout'])->name('logout');
+
+    Route::middleware('auth:staff')->group(function () {
+        Route::get('dashboard', [App\Http\Controllers\Staff\StaffController::class, 'dashboard'])->name('dashboard');
+        Route::get('orders', [App\Http\Controllers\Staff\StaffController::class, 'orders'])->name('orders');
+        Route::get('orders/{order}/edit', [App\Http\Controllers\Staff\StaffController::class, 'editOrder'])->name('orders.edit');
+        Route::put('orders/{order}', [App\Http\Controllers\Staff\StaffController::class, 'updateOrder'])->name('orders.update');
+
+        Route::get('messages', [App\Http\Controllers\Staff\StaffController::class, 'messages'])->name('messages');
+        Route::get('messages/{message}', [App\Http\Controllers\Staff\StaffController::class, 'showMessage'])->name('messages.show');
+
+        Route::get('reports', [App\Http\Controllers\Staff\StaffController::class, 'reports'])->name('reports');
+    });
+});
+
+// Driver Routes
+Route::prefix('driver')->name('driver.')->group(function () {
+    Route::get('login', [DriverLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [DriverLoginController::class, 'login'])->name('login.submit');
+    Route::post('logout', [DriverLoginController::class, 'logout'])->name('logout');
+
+    Route::middleware('auth:driver')->group(function () {
+        Route::get('dashboard', [DriverController::class, 'dashboard'])->name('dashboard');
+        Route::get('orders', [DriverController::class, 'orders'])->name('orders');
+        Route::get('orders/{order}', [DriverController::class, 'show'])->name('orders.show');
+        Route::get('profile', [DriverController::class, 'profile'])->name('profile');
+        Route::put('profile', [DriverController::class, 'updateProfile'])->name('profile.update');
     });
 });
 
@@ -162,6 +211,7 @@ use App\Http\Controllers\ReportController;
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('sales-report', [ReportController::class, 'sales'])->name('sales.report');
+    Route::get('sales-report/pdf', [ReportController::class, 'salesPdf'])->name('sales.report.pdf');
     // ... other routes
 });
 

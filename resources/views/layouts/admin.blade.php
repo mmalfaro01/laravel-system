@@ -138,9 +138,11 @@
         $routes = [
           ['admin.dashboard', 'bxs-dashboard', 'Dashboard'],
           ['admin.products.index', 'bxs-cart', 'Products'],
-          ['admin.users', 'bxs-user', 'Users'],
           ['admin.orders', 'bx-receipt', 'Orders'],
           ['admin.reports', 'bxs-report', 'Reports'],
+          ['admin.users', 'bxs-user', 'Users'],
+          ['admin.staff.create', 'bxs-id-card', 'Staff'],
+          ['admin.drivers.create', 'bxs-truck', 'Drivers'],
         ];
       @endphp
       @foreach ($routes as [$route, $icon, $label])
@@ -150,6 +152,11 @@
           </a>
         </li>
       @endforeach
+      <li class="nav-item">
+        <a href="{{ route('admin.messages') }}" class="nav-link {{ request()->routeIs('admin.messages*') ? 'active' : '' }}">
+          <i class='bx bxs-message-square'></i> <span class="ms-2">Messages</span>
+        </a>
+      </li>
       <li class="nav-item mt-3">
         <form method="POST" action="{{ route('admin.logout') }}">
           @csrf
@@ -174,6 +181,23 @@
       icon.classList.toggle('bx-chevron-left');
       icon.classList.toggle('bx-chevron-right');
     }
+  </script>
+  <script>
+    // Delegate delete buttons to submit their parent form with confirmation.
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn-delete');
+      if (!btn) return;
+      e.preventDefault();
+      const msg = btn.getAttribute('data-confirm') || 'Are you sure you want to delete this item?';
+      if (!confirm(msg)) return;
+      const form = btn.closest('form');
+      if (!form) return;
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.submit();
+      }
+    });
   </script>
   @yield('scripts')
 </body>

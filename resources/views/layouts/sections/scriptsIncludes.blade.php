@@ -1,11 +1,12 @@
 @php
-use Illuminate\Support\Facades\Vite;
+	$viteManifestPath = public_path('build/manifest.json');
+	$hasViteBuild = file_exists($viteManifestPath);
+	$viteManifest = $hasViteBuild ? json_decode(file_get_contents($viteManifestPath), true) : [];
 @endphp
-<!-- laravel style -->
-@vite(['resources/assets/vendor/js/helpers.js'])
 
-<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-@vite(['resources/assets/js/config.js'])
+@if ($hasViteBuild && isset($viteManifest['resources/assets/vendor/js/helpers.js']))
+	<script type="module" src="{{ asset('build/' . $viteManifest['resources/assets/vendor/js/helpers.js']['file']) }}" defer></script>
+@endif
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

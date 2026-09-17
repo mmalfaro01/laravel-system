@@ -22,6 +22,16 @@
     .menu-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
     .menu-tab { padding: 0.3rem 0.9rem; border-radius: 999px; border: 1px solid var(--burger-border); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--burger-muted); text-decoration: none; }
     .menu-tab.active, .menu-tab:hover { border-color: var(--burger-orange); color: var(--burger-white); background: var(--burger-dark); }
+    .add-to-cart-btn.loading {
+        pointer-events: none;
+        opacity: 0.85;
+    }
+    .add-to-cart-btn .btn-spinner {
+        display: none;
+    }
+    .add-to-cart-btn.loading .btn-spinner {
+        display: inline-block;
+    }
 </style>
 
 <div class="container py-3">
@@ -70,9 +80,12 @@
                 </div>
                 <div class="card-footer">
                     <a href="{{ route('products.show', $product) }}" class="btn btn-outline-light btn-sm flex-grow-1">Details</a>
-                    <form action="{{ route('cart.add', $product) }}" method="POST" class="d-inline">
+                    <form action="{{ route('cart.add', $product) }}" method="POST" class="d-inline js-add-to-cart-form">
                         @csrf
-                        <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+                        <button type="button" onclick="window.addToCartAjax(this); return false;" class="btn btn-primary btn-sm add-to-cart-btn js-add-to-cart-btn" data-default-text="Add to cart" data-loading-html="Adding..." data-success-html="Added" data-error-html="Try again">
+                            <span class="btn-label">Add to cart</span>
+                            <span class="btn-spinner spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                        </button>
                     </form>
                 </div>
             </div>

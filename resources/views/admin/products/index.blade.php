@@ -24,6 +24,7 @@
         <table class="table table-bordered table-hover align-middle" id="productTable">
             <thead class="table-light">
                 <tr>
+                    <th>Preview</th>
                     <th>Name</th>
                     <th>Category</th>
                     <th>Description</th>
@@ -34,26 +35,51 @@
             <tbody>
                 @forelse($products as $product)
                     <tr>
-                        <td>{{ $product->name }}</td>
+                        <td style="width: 88px;">
+                            <img
+                                src="{{ $product->image_url }}"
+                                alt="{{ $product->name }}"
+                                style="width: 64px; height: 64px; object-fit: cover; border-radius: 0.75rem; border: 1px solid #dee2e6; background: #f8f9fa;"
+                            >
+                        </td>
+                        <td>
+                            <div class="fw-semibold">{{ $product->name }}</div>
+                        </td>
                         <td>{{ optional($product->category)->name ?? '-' }}</td>
                         <td>{{ Str::limit($product->description, 50) }}</td>
                         <td>{{ $product->formatted_price }}</td>
                         <td>
                             <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure to delete this product?')">
+                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Delete</button>
+                                <button type="button" data-confirm="Are you sure to delete this product?" class="btn btn-sm btn-danger btn-delete">Delete</button>
                             </form>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="text-center text-muted">No products found.</td>
+                        <td colspan="6" class="text-center text-muted">No products found.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        @if (method_exists($products, 'firstItem'))
+            <div class="text-muted">
+                Showing {{ $products->firstItem() ?? 0 }} to {{ $products->lastItem() ?? 0 }} of {{ $products->total() }} results
+            </div>
+            <div>
+                {{ $products->links('pagination::bootstrap-5') }}
+            </div>
+        @else
+            <div class="text-muted">
+                Showing {{ $products->count() ? 1 : 0 }} to {{ $products->count() }} of {{ $products->count() }} results
+            </div>
+            <div></div>
+        @endif
     </div>
 
     {{-- JavaScript Search --}}

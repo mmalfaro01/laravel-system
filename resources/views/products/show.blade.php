@@ -14,6 +14,16 @@
     .product-detail .meta { font-size: 0.9rem; color: var(--burger-muted); margin-bottom: 1.25rem; }
     .back-link { color: var(--burger-orange); font-size: 0.9rem; margin-bottom: 1rem; display: inline-block; }
     .ingredient-badge { display: inline-block; padding: 0.35rem 0.75rem; background: var(--burger-black); border: 1px solid var(--burger-border); border-radius: 999px; margin: 0.2rem; font-size: 0.8rem; color: var(--burger-muted); }
+    .add-to-cart-btn.loading {
+        pointer-events: none;
+        opacity: 0.85;
+    }
+    .add-to-cart-btn .btn-spinner {
+        display: none;
+    }
+    .add-to-cart-btn.loading .btn-spinner {
+        display: inline-block;
+    }
 </style>
 
 <div class="container py-3">
@@ -37,10 +47,11 @@
                     <span class="ingredient-badge">Premium</span>
                     <span class="ingredient-badge">Fresh</span>
                 </div>
-                <form action="{{ route('cart.add', $product) }}" method="POST">
+                <form action="{{ route('cart.add', $product) }}" method="POST" class="js-add-to-cart-form">
                     @csrf
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <i class='bx bx-cart-add me-2'></i>Add to cart
+                    <button type="button" onclick="window.addToCartAjax(this); return false;" class="btn btn-primary btn-lg add-to-cart-btn js-add-to-cart-btn" data-default-text="Add to cart" data-loading-html="Adding..." data-success-html="Added" data-error-html="Try again">
+                        <span class="btn-label"><i class='bx bx-cart-add me-2'></i>Add to cart</span>
+                        <span class="btn-spinner spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
                     </button>
                 </form>
             </div>

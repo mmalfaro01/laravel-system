@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
+        'role',
         'phone',
         'address',
         'profile_photo',
@@ -56,9 +57,19 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function assignedOrders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'driver_id');
+    }
+
     // ✅ Optional helper
     public function isAdmin(): bool
     {
         return $this->is_admin;
+    }
+
+    public function isDriver(): bool
+    {
+        return $this->role === 'driver';
     }
 }

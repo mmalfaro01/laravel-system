@@ -35,10 +35,10 @@
                     <td><strong>₱{{ number_format($store->earnings ?? 0, 2) }}</strong></td>
                     <td>
                         <a href="{{ route('admin.stores.edit', $store->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('admin.stores.destroy', $store->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Delete this reseller?')">
+                        <form action="{{ route('admin.stores.destroy', $store->id) }}" method="POST" class="d-inline-block">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <button type="button" data-confirm="Delete this reseller?" class="btn btn-sm btn-danger btn-delete">Delete</button>
                         </form>
                     </td>
                 </tr>

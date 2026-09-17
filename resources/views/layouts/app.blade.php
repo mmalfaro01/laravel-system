@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', 'Tropical Burger - Island Flavor Burgers')</title>
 
     {{-- Bootstrap & Vite Assets --}}
@@ -12,12 +13,15 @@
     <link rel="icon" type="image/png" href="{{ asset('images/favicon/faviccon.png') }}?v={{ time() }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    @vite([
-        'resources/sass/app.scss',
-        'resources/js/app.js',
-        'resources/sass/sneat/core.scss',
-        'resources/js/sneat/core.js'
-    ])
+    @php
+        $viteManifestPath = public_path('build/manifest.json');
+        $hasViteBuild = file_exists($viteManifestPath);
+        $viteManifest = $hasViteBuild ? json_decode(file_get_contents($viteManifestPath), true) : [];
+    @endphp
+
+    @if ($hasViteBuild && isset($viteManifest['resources/sass/app.scss']))
+        <link rel="stylesheet" href="{{ asset('build/' . $viteManifest['resources/sass/app.scss']['file']) }}">
+    @endif
 
     <style>
         /* Design system: black, pitch black, orange, burger gold – applied site-wide */
@@ -220,9 +224,11 @@
                                     $cartCount = array_sum(array_column($cart, 'quantity'));
                                 @endphp
                                 @if($cartCount)
-                                    <span class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill">
+                                    <span id="cart-count-badge" class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill">
                                         {{ $cartCount }}
                                     </span>
+                                @else
+                                    <span id="cart-count-badge" class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill d-none"></span>
                                 @endif
                             </a>
                         </li>
@@ -329,4 +335,93 @@
     @endunless
                 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.updateCartBadge = function (count) {
+            const badge = document.getElementById('cart-count-badge');
+            if (!badge) return;
+
+            if (count > 0) {
+                badge.textContent = count;
+                badge.classList.remove('d-none');
+            } else {
+                badge.textContent = '';
+                badge.classList.add('d-none');
+            }
+        };
+
+        window.addToCartAjax = async function (button) {
+            const form = button.closest('form');
+            if (!form) return;
+
+            const label = button.querySelector('.btn-label');
+            const spinner = button.querySelector('.btn-spinner');
+            const originalHtml = label ? label.innerHTML : button.innerHTML;
+            const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+            button.disabled = true;
+            button.classList.add('loading');
+            if (label) {
+                label.innerHTML = button.dataset.loadingHtml || 'Adding...';
+            }
+            if (spinner) {
+                spinner.classList.remove('d-none');
+            }
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: new FormData(form),
+                });
+
+                const contentType = response.headers.get('content-type') || '';
+                const responseBody = contentType.includes('application/json')
+                    ? await response.json()
+                    : { success: response.ok, message: await response.text() };
+
+                const data = responseBody || {};
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Unable to add product to cart.');
+                }
+
+                if (label) {
+                    label.innerHTML = button.dataset.successHtml || 'Added';
+                }
+                if (typeof window.updateCartBadge === 'function') {
+                    window.updateCartBadge(data.cart_count ?? 0);
+                }
+
+                setTimeout(() => {
+                    if (label) {
+                        label.innerHTML = originalHtml;
+                    } else {
+                        button.innerHTML = originalHtml;
+                    }
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }, 1100);
+            } catch (error) {
+                if (label) {
+                    label.innerHTML = button.dataset.errorHtml || 'Try again';
+                }
+
+                setTimeout(() => {
+                    if (label) {
+                        label.innerHTML = originalHtml;
+                    } else {
+                        button.innerHTML = originalHtml;
+                    }
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }, 1400);
+            }
+        };
+
+    </script>
    </body></html>

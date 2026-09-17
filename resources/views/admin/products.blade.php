@@ -35,10 +35,10 @@
                     <td>{{ $product->formatted_price }}</td>
                     <td>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Delete this product?')">
+                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <button type="button" data-confirm="Delete this product?" class="btn btn-sm btn-danger btn-delete">Delete</button>
                         </form>
                     </td>
                 </tr>

@@ -102,6 +102,9 @@
             </form>
 
             <p class="footer-text">Secure admin access</p>
+            <p class="footer-text" style="margin-top: -0.5rem; border-top: 0; padding-top: 0;">
+                Driver access? <a href="{{ route('driver.login') }}" style="color: var(--burger-orange); font-weight: 700; text-decoration: none;">Sign in here</a>
+            </p>
             <div class="back-link">
                 <a href="{{ route('home') }}">← Back to site</a>
             </div>

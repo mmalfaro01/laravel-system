@@ -421,8 +421,9 @@
                                 <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
                                 <form action="{{ route('cart.add', $product) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn-card btn-card-main">
-                                        Add to cart
+                                    <button type="button" class="btn-card btn-card-main js-add-to-cart-btn" onclick="window.addToCartAjax(this); return false;" data-loading-html="Adding..." data-success-html="Added" data-error-html="Try again">
+                                        <span class="btn-label">Add to cart</span>
+                                        <span class="btn-spinner spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                                     </button>
                                 </form>
                             </div>
@@ -456,8 +457,9 @@
                                 <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
                                 <form action="{{ route('cart.add', $product) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn-card btn-card-main">
-                                        Add to cart
+                                    <button type="button" class="btn-card btn-card-main js-add-to-cart-btn" onclick="window.addToCartAjax(this); return false;" data-loading-html="Adding..." data-success-html="Added" data-error-html="Try again">
+                                        <span class="btn-label">Add to cart</span>
+                                        <span class="btn-spinner spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                                     </button>
                                 </form>
                             </div>
@@ -491,8 +493,9 @@
                                 <a href="{{ route('products.show', $product) }}" class="btn-card">Details</a>
                                 <form action="{{ route('cart.add', $product) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn-card btn-card-main">
-                                        Add to cart
+                                    <button type="button" class="btn-card btn-card-main js-add-to-cart-btn" onclick="window.addToCartAjax(this); return false;" data-loading-html="Adding..." data-success-html="Added" data-error-html="Try again">
+                                        <span class="btn-label">Add to cart</span>
+                                        <span class="btn-spinner spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                                     </button>
                                 </form>
                             </div>

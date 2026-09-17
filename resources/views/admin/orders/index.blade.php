@@ -19,7 +19,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>#</th><th>Customer</th><th>Total</th><th>Status</th><th>Placed</th><th>Actions</th>
+                <th>#</th><th>Customer</th><th>Driver</th><th>Total</th><th>Status</th><th>Placed</th><th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +27,7 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->user->name ?? 'N/A' }}</td>
+                    <td>{{ $order->driver->name ?? 'Unassigned' }}</td>
                     <td>₱{{ number_format($order->total, 2) }}</td>
                     <td>{{ ucfirst($order->status) }}</td>
                     <td>{{ $order->created_at->diffForHumans() }}</td>
@@ -35,11 +36,25 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="text-center">No orders found.</td></tr>
+                <tr><td colspan="7" class="text-center">No orders found.</td></tr>
             @endforelse
         </tbody>
     </table>
 
-    {{ $orders->links() }}
+    <div class="d-flex justify-content-between align-items-center">
+        @if (method_exists($orders, 'firstItem'))
+            <div class="text-muted">
+                Showing {{ $orders->firstItem() ?? 0 }} to {{ $orders->lastItem() ?? 0 }} of {{ $orders->total() }} results
+            </div>
+            <div>
+                {{ $orders->links('pagination::bootstrap-5') }}
+            </div>
+        @else
+            <div class="text-muted">
+                Showing {{ $orders->count() ? 1 : 0 }} to {{ $orders->count() }} of {{ $orders->count() }} results
+            </div>
+            <div></div>
+        @endif
+    </div>
 </div>
 @endsection

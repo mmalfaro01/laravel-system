@@ -83,6 +83,68 @@
                     <form action="{{ route('checkout.store') }}" method="POST">
                         @csrf
 
+                        <!-- Delivery Address Section -->
+                        <div class="mb-3 pb-3" style="border-bottom: 1px solid var(--burger-border);">
+                            <label class="form-label fw-bold">Delivery Address</label>
+
+                            <div class="mb-2">
+                                <label class="form-label">Email address</label>
+                                <input type="email" class="form-control form-control-sm" name="email"
+                                    value="{{ old('email', auth()->user()->email ?? '') }}"
+                                    placeholder="you@example.com" {{ auth()->check() ? 'readonly' : 'required' }}>
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label class="form-label">Full name</label>
+                                <input type="text" class="form-control form-control-sm" name="customer_name" 
+                                    value="{{ old('customer_name', auth()->user()->name ?? '') }}" required>
+                                @error('customer_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label">Street address</label>
+                                <input type="text" class="form-control form-control-sm" name="delivery_address" 
+                                    value="{{ old('delivery_address') }}" placeholder="123 Main St, Apt 4B" required>
+                                @error('delivery_address')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control form-control-sm" name="city" 
+                                        value="{{ old('city') }}" placeholder="Manila" required>
+                                    @error('city')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Postal code</label>
+                                    <input type="text" class="form-control form-control-sm" name="postal_code" 
+                                        value="{{ old('postal_code') }}" placeholder="12345" required>
+                                    @error('postal_code')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label">Phone number</label>
+                                <input type="tel" class="form-control form-control-sm" name="phone" 
+                                    value="{{ old('phone', auth()->user()->phone ?? '') }}" 
+                                    placeholder="+63 9xx xxx xxxx" required>
+                                @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Payment method</label>
                             <select name="payment_method" class="form-select form-select-sm" id="payment-method-select" required>

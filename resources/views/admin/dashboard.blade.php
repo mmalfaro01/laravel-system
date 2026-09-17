@@ -22,6 +22,22 @@
         padding: 1.25rem;
     }
     .chart-card h5 { color: var(--burger-gold); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .chart-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .chart-toolbar .btn {
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+    .chart-toolbar .btn.active {
+        background: var(--burger-orange);
+        color: #1a1208;
+        border-color: var(--burger-orange);
+    }
     .action-card {
         background: var(--burger-dark);
         border: 1px solid var(--burger-border);
@@ -29,12 +45,24 @@
         padding: 1.25rem;
         height: 100%;
         text-align: center;
+        text-decoration: none;
+        display: block;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
     }
-    .action-card:hover { border-color: var(--burger-orange); }
+    .action-card:hover {
+        border-color: var(--burger-orange);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    }
     .action-card .action-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
     .action-card h5 { color: var(--burger-white); font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
     .action-card p { color: var(--burger-muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
     .action-card .btn { border-radius: 999px; font-weight: 600; font-size: 0.875rem; }
+    .action-card:focus {
+        outline: 2px solid var(--burger-orange);
+        outline-offset: 3px;
+    }
 </style>
 
 <div class="container-fluid py-3">
@@ -99,7 +127,17 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="chart-card">
-                <h5><i class='bx bx-line-chart me-2'></i>Monthly sales</h5>
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                    <h5 class="mb-0"><i class='bx bx-line-chart me-2'></i>Products sold by period</h5>
+                    <div class="chart-toolbar">
+                        <button type="button" class="btn btn-outline-warning active" data-period="day">Today</button>
+                        <button type="button" class="btn btn-outline-warning" data-period="week">This Week</button>
+                        <button type="button" class="btn btn-outline-warning" data-period="month">This Month</button>
+                        <button type="button" class="btn btn-outline-info" data-type="bar">Bar</button>
+                        <button type="button" class="btn btn-outline-info" data-type="line">Line</button>
+                    </div>
+                </div>
+                <div id="productSalesChartData" class="d-none" data-chart='{{ $productSalesChartData }}'></div>
                 <canvas id="earningsChart" height="90"></canvas>
             </div>
         </div>
@@ -139,33 +177,40 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('earningsChart').getContext('2d');
-    var earningsData = <?php echo json_encode(array_values($monthlyEarnings->all())); ?>;
-    var earningsLabels = <?php echo json_encode(array_map(function ($m) { return \Carbon\Carbon::create()->month((int) $m)->format('M'); }, array_keys($monthlyEarnings->all()))); ?>;
+    const chartData = JSON.parse(document.getElementById('productSalesChartData').dataset.chart);
 
-    new Chart(ctx, {
-        type: 'bar',
+    let currentPeriod = 'day';
+    let currentType = 'bar';
+
+    const chart = new Chart(ctx, {
+        type: currentType,
         data: {
-            labels: earningsLabels,
+            labels: chartData[currentPeriod].labels,
             datasets: [{
-                label: 'Sales (₱)',
-                data: earningsData,
+                label: 'Quantity Sold',
+                data: chartData[currentPeriod].values,
                 backgroundColor: '#f39a12',
                 borderColor: '#ff8c00',
                 borderWidth: 1,
-                borderRadius: 6
+                borderRadius: 6,
+                fill: false,
+                tension: 0.35
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: { display: false }
+                legend: {
+                    display: true,
+                    labels: { color: '#ffffff' }
+                }
             },
             scales: {
                 y: {
                     beginAtZero: true,
                     grid: { color: '#2a2826' },
                     ticks: {
-                        callback: v => '₱' + (v >= 1000 ? (v/1000)+'k' : v),
+                        callback: v => v,
                         color: '#b0aeab'
                     }
                 },
@@ -175,6 +220,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
+    });
+
+    function updatePeriod(period) {
+        currentPeriod = period;
+        chart.data.labels = chartData[currentPeriod].labels;
+        chart.data.datasets[0].data = chartData[currentPeriod].values;
+        chart.update();
+
+        document.querySelectorAll('[data-period]').forEach(btn => btn.classList.toggle('active', btn.dataset.period === currentPeriod));
+    }
+
+    function updateChartType(type) {
+        currentType = type;
+        chart.config.type = currentType;
+        chart.update();
+
+        document.querySelectorAll('[data-type]').forEach(btn => btn.classList.toggle('active', btn.dataset.type === currentType));
+    }
+
+    document.querySelectorAll('[data-period]').forEach(button => {
+        button.addEventListener('click', function () {
+            updatePeriod(this.dataset.period);
+        });
+    });
+
+    document.querySelectorAll('[data-type]').forEach(button => {
+        button.addEventListener('click', function () {
+            updateChartType(this.dataset.type);
+        });
+    });
+
+    const periodCycle = ['day', 'week', 'month'];
+    document.getElementById('earningsChart').addEventListener('click', function () {
+        const currentIndex = periodCycle.indexOf(currentPeriod);
+        const nextPeriod = periodCycle[(currentIndex + 1) % periodCycle.length];
+        updatePeriod(nextPeriod);
     });
 });
 </script>

@@ -66,15 +66,13 @@
             </p>
         </div>
         <div class="col-md-6">
-            {{-- Embedded Google Map of Siquijor --}}
+            {{-- Embedded Google Map / Street View provided by user --}}
             <div class="ratio ratio-4x3 rounded shadow-lg" style="border: 5px solid var(--burger-orange);">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126060.85824753842!2d123.48687032763673!3d9.213618587999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33ab3f51cf8ecc9d%3A0x72ea7c6769d3c3e8!2sSiquijor%2C%20Philippines!5e0!3m2!1sen!2sph!4v1734438000000!5m2!1sen!2sph" 
-                    width="600" 
-                    height="450" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!4v1780225741150!6m8!1m7!1sf3Mxf00T3DHvj9CxPsIK-w!2m2!1d9.213560589120979!2d123.5019524607573!3f301.51896349172034!4f1.2163060365165563!5f0.7820865974627469"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>

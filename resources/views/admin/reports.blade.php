@@ -25,6 +25,7 @@
             <input type="date" name="to" id="to" class="form-control" value="{{ request('to') }}">
         </div>
         <div class="col-md-12 text-end">
+            <a href="{{ route('admin.sales.report.pdf', request()->all()) }}" class="btn btn-primary me-2">⬇️ Download PDF</a>
             <button type="submit" class="btn btn-success">🔍 Filter Report</button>
         </div>
     </form>

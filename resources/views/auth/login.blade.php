@@ -5,7 +5,22 @@
 @section('content')
 <style>
     .auth-form-wrap {
-        min-height: 60vh;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+    }
+
+    .auth-form-wrap .container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-form-wrap .row {
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -121,6 +136,13 @@
         box-shadow: 0 4px 12px #2a2008;
     }
 
+    .auth-footer-section {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem auto 0;
+        width: 100%;
+    }
+
     .auth-footer-text {
         color: #6b7280;
         font-size: 0.9rem;
@@ -214,9 +236,8 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-4">
-                    <p class="auth-footer-text mb-1">Don't have an account?</p>
-                    <a href="{{ route('register') }}" class="auth-footer-link">Create one</a>
+                <div class="auth-footer-section">
+                    <p class="auth-footer-text mb-0">Don't have an account? <a href="{{ route('register') }}" class="auth-footer-link">Create one</a></p>
                 </div>
 
             </div>

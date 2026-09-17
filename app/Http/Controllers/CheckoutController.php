@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Notifications\OrderPlaced;
 
 class CheckoutController extends Controller
 {
@@ -24,7 +27,15 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        $isLoggedIn = Auth::check();
+
         $rules = [
+            'email' => $isLoggedIn ? 'nullable|email|max:255' : 'required|email|max:255',
+            'customer_name'    => 'required|string|max:255',
+            'delivery_address' => 'required|string|max:255',
+            'phone'            => 'required|string|max:20',
+            'city'             => 'required|string|max:100',
+            'postal_code'      => 'required|string|max:20',
             'payment_method'   => 'required|in:card,cod,gcash,paypal',
             'shipping_option'  => 'nullable|in:now,schedule',
         ];
@@ -37,8 +48,8 @@ class CheckoutController extends Controller
         // Payment-specific validations (for display/processing purposes only)
         $paymentMethod = $request->payment_method;
         if ($paymentMethod === 'cod') {
-            $rules['cod_address'] = 'required|string|max:255';
-            $rules['cod_name'] = 'required|string|max:255';
+            $rules['cod_address'] = 'nullable|string|max:255';
+            $rules['cod_name'] = 'nullable|string|max:255';
         } elseif ($paymentMethod === 'card') {
             $rules['name'] = 'required|string|max:255';
             $rules['card'] = 'required';
@@ -60,14 +71,29 @@ class CheckoutController extends Controller
 
         try {
             $total = array_reduce($cart, fn($carry, $item) => $carry + ($item['price'] * $item['quantity']), 0);
+
+            $orderData = [
+                'user_id'           => Auth::id(),
+                'customer_name'     => $request->customer_name,
+                'delivery_address'  => $request->delivery_address,
+                'phone'             => $request->phone,
+                'city'              => $request->city,
+                'postal_code'       => $request->postal_code,
+                'total'             => $total,
+                'status'            => 'pending',
+                'shipping_option'   => $request->shipping_option ?? 'now',
+                'delivery_date'     => $request->shipping_option === 'schedule' ? $request->delivery_date : null,
+            ];
+
+            if (Schema::hasColumn('orders', 'payment_method')) {
+                $orderData['payment_method'] = $request->payment_method;
+            }
+
+            if (Schema::hasColumn('orders', 'delivery_contact')) {
+                $orderData['delivery_contact'] = $request->phone;
+            }
             
-            $order = Order::create([
-                'user_id'         => Auth::id(),
-                'total'           => $total,
-                'status'          => 'pending',
-                'shipping_option' => $request->shipping_option ?? 'now',
-                'delivery_date'   => $request->shipping_option === 'schedule' ? $request->delivery_date : null,
-            ]);
+            $order = Order::create($orderData);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Order creation failed: ' . $e->getMessage());
         }
@@ -85,8 +111,23 @@ class CheckoutController extends Controller
             }
         }
 
+        // Load relationships for email
+        $order->load('orderItems.product');
+
+        // Send order confirmation email
+        /** @var \App\Models\User|null $customer */
+        $customer = Auth::user();
+
+        // Prefer authenticated user's email; fall back to provided checkout email
+        $recipientEmail = $customer?->email ?: $request->input('email');
+
+        if (! empty($recipientEmail)) {
+            Notification::route('mail', $recipientEmail)
+                ->notify(new OrderPlaced($order));
+        }
+
         session()->forget('cart');
 
-        return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
+        return redirect()->route('orders.index')->with('success', 'Order placed successfully! A confirmation email has been sent.');
     }
 }

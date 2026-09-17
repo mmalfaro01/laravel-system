@@ -39,9 +39,15 @@ class OrderController extends Controller
             'status' => 'required|string|in:pending,processing,shipped,completed,cancelled'
         ]);
 
+        $previousStatus = $order->status;
         $order->status = $request->status;
         $order->save();
 
-        return redirect()->back()->with('status', 'Order status updated successfully.');
+        // Send email notification to customer
+        if ($order->user) {
+            $order->user->notify(new \App\Notifications\OrderStatusUpdated($order, $previousStatus));
+        }
+
+        return redirect()->back()->with('status', 'Order status updated successfully. Customer notification sent.');
     }
 }

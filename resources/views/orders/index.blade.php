@@ -23,8 +23,8 @@
 
     .table-responsive { background: var(--burger-dark) !important; }
     .orders-table { color: var(--burger-white); background: var(--burger-dark) !important; }
-    .orders-table thead { background: var(--burger-black); color: var(--burger-gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .orders-table thead th { border-color: var(--burger-border); padding: 0.65rem 0.75rem; font-weight: 700; background: var(--burger-black) !important; }
+    .orders-table thead { background: var(--burger-black); color: #ffffff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .orders-table thead th { border-color: var(--burger-border); padding: 0.65rem 0.75rem; font-weight: 700; background: var(--burger-black) !important; color: #ffffff !important; }
     .orders-table tbody { background: var(--burger-dark) !important; }
     .orders-table tbody td { border-color: var(--burger-border); padding: 0.75rem; vertical-align: middle; background: var(--burger-dark) !important; color: var(--burger-white); }
     .orders-table tbody tr:hover { background: #252422 !important; }
